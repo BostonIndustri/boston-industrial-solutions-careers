@@ -1,12 +1,9 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly.
 
-// Include the function files.
-// include 'functions/remote_get.php';
-
-
 /**
  * If the function, 'debug' doesn't exist.
+ * This should be removed from production environment.
  */
 if ( ! function_exists( 'debug' ) ) {
 	/**
@@ -20,9 +17,9 @@ if ( ! function_exists( 'debug' ) ) {
 }
 
 /**
- * If the function, 'hello_elementor_child_locale_stylesheet_uri_callback' doesn't exist.
+ * If the function, 'boston_careers_locale_stylesheet_uri_callback' doesn't exist.
  */
-if ( ! function_exists( 'hello_elementor_child_locale_stylesheet_uri_callback' ) ) {
+if ( ! function_exists( 'boston_careers_locale_stylesheet_uri_callback' ) ) {
 	/**
 	 * Set the locale stylesheet URI.
 	 *
@@ -30,7 +27,7 @@ if ( ! function_exists( 'hello_elementor_child_locale_stylesheet_uri_callback' )
 	 * @return string
 	 * @since 1.0.0
 	 */
-	function hello_elementor_child_locale_stylesheet_uri_callback( $uri ) {
+	function boston_careers_locale_stylesheet_uri_callback( $uri ) {
 		if ( empty( $uri ) && is_rtl() && file_exists( get_template_directory() . '/rtl.css' ) ) {
 			$uri = get_template_directory_uri() . '/rtl.css';
 		}
@@ -39,203 +36,282 @@ if ( ! function_exists( 'hello_elementor_child_locale_stylesheet_uri_callback' )
 	}
 }
 
-add_filter( 'locale_stylesheet_uri', 'hello_elementor_child_locale_stylesheet_uri_callback' );
+add_filter( 'locale_stylesheet_uri', 'boston_careers_locale_stylesheet_uri_callback' );
 
 /**
- * If the function, 'hello_elementor_child_wp_enqueue_scripts_callback' doesn't exist.
+ * If the function, 'boston_careers_wp_enqueue_scripts_callback' doesn't exist.
  */
-if ( ! function_exists( 'hello_elementor_child_wp_enqueue_scripts_callback' ) ) {
+if ( ! function_exists( 'boston_careers_wp_enqueue_scripts_callback' ) ) {
 	/**
 	 * Enqueue the custom assets files.
 	 *
 	 * @since 1.0.0
 	 */
-	function hello_elementor_child_wp_enqueue_scripts_callback() {
+	function boston_careers_wp_enqueue_scripts_callback() {
 		// Enqueue the main style file.
 		wp_enqueue_style(
 			'hello-elem-child-style',
-			trailingslashit( get_stylesheet_directory_uri() ) . 'style.css',
-			array( 'hello-elementor','hello-elementor','hello-elementor-theme-style','hello-elementor-header-footer' )
+			trailingslashit( get_stylesheet_directory_uri() ) . '/style.css',
+			array( 'hello-elementor','hello-elementor','hello-elementor-theme-style','hello-elementor-header-footer' ),
+			filemtime( get_stylesheet_directory() . '/style.css' ),
+			'all'
 		);
 	}
 }
 
-add_action( 'wp_enqueue_scripts', 'hello_elementor_child_wp_enqueue_scripts_callback' );
+add_action( 'wp_enqueue_scripts', 'boston_careers_wp_enqueue_scripts_callback' );
 
 
 /**
- * If the function, 'hello_elementor_child_wp_admin_enqueue_scripts_callback' doesn't exist.
+ * If the function, 'boston_careers_wp_admin_enqueue_scripts_callback' doesn't exist.
  */
-if ( ! function_exists( 'hello_elementor_child_wp_admin_enqueue_scripts_callback' ) ) {
+if ( ! function_exists( 'boston_careers_wp_admin_enqueue_scripts_callback' ) ) {
 	/**
 	 * Enqueue js file for admin.
 	 *
 	 * @since 1.0.0
 	 */
-	function hello_elementor_child_wp_admin_enqueue_scripts_callback() {
+	function boston_careers_wp_admin_enqueue_scripts_callback() {
+		// Enqueue custom script for admin dashboard.
+		wp_enqueue_script(
+			'boston-careers-admin',
+			get_stylesheet_directory_uri() . '/assets/js/admin.js',
+			array( 'jquery' ),
+			filemtime( get_stylesheet_directory() . '/assets/js/admin.js' ),
+			true
+		);
 
-		wp_enqueue_script('job-sync-js', get_stylesheet_directory_uri() . '/assets/js/admin.js', array('jquery'), null, true);
-		wp_localize_script('job-sync-js', 'bis_admin_ajax', array(
-			'ajax_url' => admin_url('admin-ajax.php'),
-			'nonce'    => wp_create_nonce('bis_admin_nonce')
-		));
+		// Localize variables 
+		wp_localize_script(
+			'boston-careers-admin',
+			'Boston_Careers_Admin_Js_Props',
+			array(
+				'ajax_url'   => admin_url('admin-ajax.php'),
+				'ajax_nonce' => wp_create_nonce('bis_admin_nonce')
+			)
+		);
 
 	}
 }
-add_action( 'admin_enqueue_scripts', 'hello_elementor_child_wp_admin_enqueue_scripts_callback' ); 
 
+add_action( 'admin_enqueue_scripts', 'boston_careers_wp_admin_enqueue_scripts_callback' );
 
 /**
- * Theme option page to store theme settings.
- *
+ * If the function, `boston_careers_acf_init_callback` doesn't exist.
  */
-if( function_exists('acf_add_options_page') ) {
-	acf_add_options_page(array(
-		'menu_title' => 'BIS Settings',
-		'menu_slug' => 'bis-settings'
-	));
-	acf_add_options_sub_page(array(
-		'page_title' => 'Zoho API Settings',
-		'menu_title' => 'Zoho API Settings',
-		'parent_slug' => 'bis-settings',
-	));	
+if ( ! function_exists( 'boston_careers_acf_init_callback' ) ) {
+	/**
+	 * Initialize the ACF custom settings page.
+	 *
+	 * @since 1.0.0
+	 */
+	function boston_careers_acf_init_callback() {
+		if ( function_exists( 'acf_add_options_page' ) ) {
+			// Add main options page.
+			acf_add_options_page(
+				array(
+					'menu_title' => __( 'Boston Careers Settings', 'boston-careers' ),
+					'menu_slug' => 'bis-settings'
+				)
+			);
+
+			// Add child page to the main options page.
+			acf_add_options_sub_page(
+				array(
+					'page_title' => __( 'Zoho Recruit', 'boston-careers' ),
+					'menu_title' => __( 'Zoho Recruit', 'boston-careers' ),
+					'parent_slug' => 'bis-settings',
+				)
+			);	
+		}
+	}
 }
 
+add_action( 'acf/init', 'boston_careers_acf_init_callback' );
 
 /**
- * If the function, `hello_elementor_child_init_callback` doesn't exist.
+ * If the function, `boston_careers_register_job_custom_post_type` doesn't exist.
  */
-if ( ! function_exists( 'hello_elementor_child_init_callback' ) ) {
+if ( ! function_exists( 'boston_careers_register_job_custom_post_type' ) ) {
+	/**
+	 * Register custom post type: job.
+	 *
+	 * @since 1.0.0
+	 */
+	function boston_careers_register_job_custom_post_type() {
+		register_post_type(
+			'job',
+			array(
+				'labels'             => array(
+					'name'               => _x( 'Jobs', 'post type general name', 'boston-careers' ),
+					'singular_name'      => _x( 'Job', 'post type singular name', 'boston-careers' ),
+					'menu_name'          => _x( 'Jobs', 'admin menu', 'boston-careers' ),
+					'name_admin_bar'     => _x( 'Job', 'add new on admin bar', 'boston-careers' ),
+					'add_new'            => _x( 'Add New', 'job', 'boston-careers' ),
+					'add_new_item'       => __( 'Add New Job', 'boston-careers' ),
+					'new_item'           => __( 'New Job', 'boston-careers' ),
+					'edit_item'          => __( 'Edit Job', 'boston-careers' ),
+					'view_item'          => __( 'View Job', 'boston-careers' ),
+					'all_items'          => __( 'All Jobs', 'boston-careers' ),
+					'search_items'       => __( 'Search Jobs', 'boston-careers' ),
+					'not_found'          => __( 'No Job Found.', 'boston-careers' ),
+					'not_found_in_trash' => __( 'No Job Found in Trash.', 'boston-careers' ),
+				),
+				'public'             => true,
+				'publicly_queryable' => true,
+				'show_ui'            => true,
+				'show_in_menu'       => true,
+				'menu_icon'          => 'dashicons-portfolio',
+				'query_var'          => true,
+				'rewrite'            => array( 'slug' => 'job' ),
+				'capability_type'    => 'post',
+				'has_archive'        => true,
+				'hierarchical'       => false,
+				'menu_position'      => null,
+				'supports'           => array( 'title', 'editor', 'excerpt', 'thumbnail', 'revisions' ),
+			)
+		);
+
+		// flush rewrite rules.
+		$job_rewrite = get_option( 'job_post_type_rewrite' );
+
+		if ( 'yes' !== $job_rewrite ) {
+			flush_rewrite_rules( false );
+			update_option( 'job_post_type_rewrite', 'yes', false );
+		}
+	}
+}
+
+/**
+ * If the function, `boston_careers_register_recruiter_custom_taxonomy` doesn't exist.
+ */
+if ( ! function_exists( 'boston_careers_register_recruiter_custom_taxonomy' ) ) {
+	/**
+	 * Register custom taxonomy: recruiter.
+	 *
+	 * @since 1.0.0
+	 */
+	function boston_careers_register_recruiter_custom_taxonomy() {
+		// Register Recruiter Taxonomy
+		register_taxonomy(
+			'recruiters',
+			'job',
+			array(
+				'labels'            => array(
+					'name'          => __( 'Recruiters', 'boston-careers' ),
+					'singular_name' => __( 'Recruiter', 'boston-careers' ),
+					'search_items'  => __( 'Search Recruiter', 'boston-careers' ),
+					'all_items'     => __( 'All Recruiters', 'boston-careers' ),
+					'edit_item'     => __( 'Edit Recruiter', 'boston-careers' ),
+					'update_item'   => __( 'Update Recruiter', 'boston-careers' ),
+					'add_new_item'  => __( 'Add New Recruiter', 'boston-careers' ),
+					'new_item_name' => __( 'New Recruiter Name', 'boston-careers' ),
+					'menu_name'     => __( 'Recruiters', 'boston-careers' ),
+				),
+				'hierarchical'      => true,
+				'show_ui'           => true,
+				'show_admin_column' => true,
+				'query_var'         => true,
+				'rewrite'           => array( 'slug' => 'recruiter' ),
+			)
+		);
+	}
+}
+
+/**
+ * If the function, `boston_careers_register_industry_custom_taxonomy` doesn't exist.
+ */
+if ( ! function_exists( 'boston_careers_register_industry_custom_taxonomy' ) ) {
+	/**
+	 * Register custom taxonomy: industry.
+	 *
+	 * @since 1.0.0
+	 */
+	function boston_careers_register_industry_custom_taxonomy() {
+		// Register Industry Taxonomy
+		register_taxonomy(
+			'industry',
+			'job',
+			array(
+				'labels'            => array(
+					'name'          => __( 'Industries', 'boston-careers' ),
+					'singular_name' => __( 'Industry', 'boston-careers' ),
+					'search_items'  => __( 'Search Industries', 'boston-careers' ),
+					'all_items'     => __( 'All Industries', 'boston-careers' ),
+					'edit_item'     => __( 'Edit Industry', 'boston-careers' ),
+					'update_item'   => __( 'Update Industry', 'boston-careers' ),
+					'add_new_item'  => __( 'Add New Industry', 'boston-careers' ),
+					'new_item_name' => __( 'New Industry Name', 'boston-careers' ),
+					'menu_name'     => __( 'Industries', 'boston-careers' ),
+				),
+				'hierarchical'      => true,
+				'show_ui'           => true,
+				'show_admin_column' => true,
+				'query_var'         => true,
+				'rewrite'           => array( 'slug' => 'industry' ),
+			)
+		);
+	}
+}
+
+/**
+ * If the function, `boston_careers_register_job_type_custom_taxonomy` doesn't exist.
+ */
+if ( ! function_exists( 'boston_careers_register_job_type_custom_taxonomy' ) ) {
+	/**
+	 * Register custom taxonomy: industries.
+	 *
+	 * @since 1.0.0
+	 */
+	function boston_careers_register_job_type_custom_taxonomy() {
+		// Register Recruiter Taxonomy
+		register_taxonomy(
+			'job_type',
+			'job',
+			array(
+				'labels'            => array(
+					'name'          => __( 'Job Types', 'boston-careers' ),
+					'singular_name' => __( 'Job Types', 'boston-careers' ),
+					'search_items'  => __( 'Search Job Typess', 'boston-careers' ),
+					'all_items'     => __( 'All Job Typess', 'boston-careers' ),
+					'edit_item'     => __( 'Edit Job Types', 'boston-careers' ),
+					'update_item'   => __( 'Update Job Types', 'boston-careers' ),
+					'add_new_item'  => __( 'Add New Job Types', 'boston-careers' ),
+					'new_item_name' => __( 'New Job Types Name', 'boston-careers' ),
+					'menu_name'     => __( 'Job Typess', 'boston-careers' ),
+				),
+				'hierarchical'      => true,
+				'show_ui'           => true,
+				'show_admin_column' => true,
+				'query_var'         => true,
+				'rewrite'           => array( 'slug' => 'job_type' ),
+			)
+		);
+	}
+}
+
+/**
+ * If the function, `boston_careers_init_callback` doesn't exist.
+ */
+if ( ! function_exists( 'boston_careers_init_callback' ) ) {
 	/**
 	 * Do something on WordPress initialization.
 	 *
 	 * @since 1.0.0
 	 */
-	function hello_elementor_child_init_callback() {
-		// $zoho_auth_token = hello_elementor_child_zoho_crm_auth_token();
-		// $response = wp_remote_get(
-		// 	'https://recruit.zoho.com/recruit/v2/settings/modules',
-		// 	array(
-		// 		'headers' => array(
-		// 			'Authorization' => 'Zoho-oauthtoken 1000.03xxxxxxxxxxxxxxxxxa5317.dxxxxxxxxxxxxxxxxxfa',
-		// 		)
-		// 	)
-		// );
-
-		// debug( $response );
-		// die;
-
-		// if ( ( !is_wp_error($response)) && (200 === wp_remote_retrieve_response_code( $response ) ) ) {
-		// 	$responseBody = json_decode($response['body']);
-		// 	if( json_last_error() === JSON_ERROR_NONE ) {
-		// 		//Do your thing.
-		// 	}
-		// }
-
-
-		$labels = array(
-			'name'               => _x('Jobs', 'post type general name','hello-elementor-child'),
-			'singular_name'      => _x('Job', 'post type singular name','hello-elementor-child'),
-			'menu_name'          => _x('Jobs', 'admin menu','hello-elementor-child'),
-			'name_admin_bar'     => _x('Job', 'add new on admin bar','hello-elementor-child'),
-			'add_new'            => _x('Add New', 'job','hello-elementor-child'),
-			'add_new_item'       => __('Add New Job','hello-elementor-child'),
-			'new_item'           => __('New Job','hello-elementor-child'),
-			'edit_item'          => __('Edit Job','hello-elementor-child'),
-			'view_item'          => __('View Job','hello-elementor-child'),
-			'all_items'          => __('All Jobs','hello-elementor-child'),
-			'search_items'       => __('Search Jobs','hello-elementor-child'),
-			'not_found'          => __('No jobs found.','hello-elementor-child'),
-			'not_found_in_trash' => __('No jobs found in Trash.','hello-elementor-child'),
-		);
-	
-		$args = array(
-			'labels'             => $labels,
-			'public'             => true,
-			'publicly_queryable' => true,
-			'show_ui'            => true,
-			'show_in_menu'       => true,
-			'menu_icon'          => 'dashicons-portfolio',
-			'query_var'          => true,
-			'rewrite'            => array('slug' => 'jobs'),
-			'capability_type'    => 'post',
-			'has_archive'        => true,
-			'hierarchical'       => false,
-			'menu_position'      => null,
-			'supports'           => array('title', 'editor', 'excerpt', 'thumbnail', 'revisions'),
-		);
-	
-		register_post_type('jobs', $args);
-
-
-
-		// Register Recruiter Taxonomy
-		register_taxonomy('recruiter', 'jobs', array(
-			'labels' => array(
-				'name' => __('Recruiters', 'hello-elementor-child'),
-				'singular_name' => __('Recruiter', 'hello-elementor-child'),
-				'search_items' => __('Search Recruiters', 'hello-elementor-child'),
-				'all_items' => __('All Recruiters', 'hello-elementor-child'),
-				'edit_item' => __('Edit Recruiter', 'hello-elementor-child'),
-				'update_item' => __('Update Recruiter', 'hello-elementor-child'),
-				'add_new_item' => __('Add New Recruiter', 'hello-elementor-child'),
-				'new_item_name' => __('New Recruiter Name', 'hello-elementor-child'),
-				'menu_name' => __('Recruiters', 'hello-elementor-child'),
-			),
-			'hierarchical' => true,
-			'show_ui' => true,
-			'show_admin_column' => true,
-			'query_var' => true,
-			'rewrite' => array('slug' => 'recruiter'),
-		));
-	
-		// Register Industry Taxonomy
-		register_taxonomy('industry', 'jobs', array(
-			'labels' => array(
-				'name' => __('Industries', 'hello-elementor-child'),
-				'singular_name' => __('Industry', 'hello-elementor-child'),
-				'search_items' => __('Search Industries', 'hello-elementor-child'),
-				'all_items' => __('All Industries', 'hello-elementor-child'),
-				'edit_item' => __('Edit Industry', 'hello-elementor-child'),
-				'update_item' => __('Update Industry', 'hello-elementor-child'),
-				'add_new_item' => __('Add New Industry', 'hello-elementor-child'),
-				'new_item_name' => __('New Industry Name', 'hello-elementor-child'),
-				'menu_name' => __('Industries', 'hello-elementor-child'),
-			),
-			'hierarchical' => true,
-			'show_ui' => true,
-			'show_admin_column' => true,
-			'query_var' => true,
-			'rewrite' => array('slug' => 'industry'),
-		));
-	
-		// Register Job Type Taxonomy
-		register_taxonomy('job_type', 'jobs', array(
-			'labels' => array(
-				'name' => __('Job Types', 'hello-elementor-child'),
-				'singular_name' => __('Job Type', 'hello-elementor-child'),
-				'search_items' => __('Search Job Types', 'hello-elementor-child'),
-				'all_items' => __('All Job Types', 'hello-elementor-child'),
-				'edit_item' => __('Edit Job Type', 'hello-elementor-child'),
-				'update_item' => __('Update Job Type', 'hello-elementor-child'),
-				'add_new_item' => __('Add New Job Type', 'hello-elementor-child'),
-				'new_item_name' => __('New Job Type Name', 'hello-elementor-child'),
-				'menu_name' => __('Job Types', 'hello-elementor-child'),
-			),
-			'hierarchical' => false,
-			'show_ui' => true,
-			'show_admin_column' => true,
-			'query_var' => true,
-			'rewrite' => array('slug' => 'job-type'),
-		));
+	function boston_careers_init_callback() {
+		boston_careers_register_job_custom_post_type(); // Register jobs custom post type.
+		boston_careers_register_recruiter_custom_taxonomy(); // Register recruiters custom taxonomy.
+		boston_careers_register_industry_custom_taxonomy(); // Register industries custom taxonomy.
+		boston_careers_register_job_type_custom_taxonomy(); // Register job types custom taxonomy.
 	}
 }
 
-add_action( 'init', 'hello_elementor_child_init_callback' );
+add_action( 'init', 'boston_careers_init_callback' );
 
 
-if ( ! function_exists( 'hello_elementor_child_add_sync_button_to_jobs_list' ) ) {
-    function hello_elementor_child_add_sync_button_to_jobs_list() {
+if ( ! function_exists( 'boston_careers_add_sync_button_to_jobs_list' ) ) {
+    function boston_careers_add_sync_button_to_jobs_list() {
         $screen = get_current_screen();
 
         // Only add the button on the Jobs post type listing page
@@ -244,19 +320,20 @@ if ( ! function_exists( 'hello_elementor_child_add_sync_button_to_jobs_list' ) )
         }
     }
 }
-add_action( 'admin_page_title_buttons', 'hello_elementor_child_add_sync_button_to_jobs_list' );
+
+add_action( 'admin_page_title_buttons', 'boston_careers_add_sync_button_to_jobs_list' );
 
 
 // /**
-//  * If the function, `hello_elementor_child_zoho_crm_auth_token` doesn't exist.
+//  * If the function, `boston_careers_zoho_crm_auth_token` doesn't exist.
 //  */
-// if ( ! function_exists( 'hello_elementor_child_zoho_crm_auth_token' ) ) {
+// if ( ! function_exists( 'boston_careers_zoho_crm_auth_token' ) ) {
 // 	/**
 // 	 * Generate ZOHO CRM authentication code.
 // 	 *
 // 	 * @return
 // 	 */
-// 	function hello_elementor_child_zoho_crm_auth_token() {
+// 	function boston_careers_zoho_crm_auth_token() {
 // 		$response = wp_remote_post(
 // 			'https://accounts.zoho.com/oauth/v2/token',
 // 			array(
@@ -289,15 +366,15 @@ add_action( 'admin_page_title_buttons', 'hello_elementor_child_add_sync_button_t
 
 
 /**
- * If the function, `hello_elementor_child_refresh_zoho_access_token` doesn't exist.
+ * If the function, `boston_careers_refresh_zoho_access_token` doesn't exist.
  */
-if ( ! function_exists( 'hello_elementor_child_refresh_zoho_access_token' ) ) {
+if ( ! function_exists( 'boston_careers_refresh_zoho_access_token' ) ) {
 	/**
 	 * Get refresh token generated from self client code.
 	 *
 	 * @since 1.0.0
 	 */
-	function hello_elementor_child_refresh_zoho_access_token() {
+	function boston_careers_refresh_zoho_access_token() {
 
 		$zoho_client_id = get_field('zoho_client_id','option');
 		$zoho_client_secret = get_field('zoho_client_secret','option');
@@ -338,16 +415,16 @@ if ( ! function_exists( 'hello_elementor_child_refresh_zoho_access_token' ) ) {
 
 
 /**
- * If the function, `hello_elementor_child_fetch_zoho_job_openings` doesn't exist.
+ * If the function, `boston_careers_fetch_zoho_job_openings` doesn't exist.
  */
-if ( ! function_exists( 'hello_elementor_child_fetch_zoho_job_openings' ) ) {
+if ( ! function_exists( 'boston_careers_fetch_zoho_job_openings' ) ) {
 		/**
 		 * Fetch job openings from zoho portal.
 		 *
 		 * @since 1.0.0
 		 */
-	function hello_elementor_child_fetch_zoho_job_openings() {
-		$access_token = hello_elementor_child_refresh_zoho_access_token();
+	function boston_careers_fetch_zoho_job_openings() {
+		$access_token = boston_careers_refresh_zoho_access_token();
 		if (!$access_token) {
 			return false; // Exit if no valid token
 		}
@@ -378,61 +455,61 @@ if ( ! function_exists( 'hello_elementor_child_fetch_zoho_job_openings' ) ) {
 
 
 /**
- * If the function, `hello_elementor_child_job_listing_shortcode` doesn't exist.
+ * If the function, `boston_careers_job_listing_shortcode` doesn't exist.
  */
-if ( ! function_exists( 'hello_elementor_child_job_listing_shortcode' ) ) {
+if ( ! function_exists( 'boston_careers_job_listing_shortcode' ) ) {
 	/**
 	 * Shortcode which generate job listing data dynamically.
 	 *
 	 * @since 1.0.0
 	*/
-	function hello_elementor_child_job_listing_shortcode() {
+	function boston_careers_job_listing_shortcode() {
 
-		$jobs = hello_elementor_child_fetch_zoho_job_openings(); // Fetch the jobs
+		$jobs = boston_careers_fetch_zoho_job_openings(); // Fetch the jobs
 		ob_start(); // Start output buffering
 		if ($jobs) {
 			?>
 			<table>
 				<thead>
 					<tr>
-						<th scope="col"><?php esc_html_e('POSITION','hello-elementor-child'); ?></th>
-						<th scope="col"><?php esc_html_e('DEPARTMENT','hello-elementor-child'); ?></th>
-						<th scope="col"><?php esc_html_e('LOCATION','hello-elementor-child'); ?></th>
+						<th scope="col"><?php esc_html_e('POSITION','boston-careers'); ?></th>
+						<th scope="col"><?php esc_html_e('DEPARTMENT','boston-careers'); ?></th>
+						<th scope="col"><?php esc_html_e('LOCATION','boston-careers'); ?></th>
 					</tr>
 				</thead>
 				<tbody>
 					<?php foreach ($jobs as $job) : ?>
 						<tr>
 							<td data-label="POSITION">
-								<a href="javascript:void(0);"><?php echo esc_html($job['Job_Opening_Name'],'hello-elementor-child'); ?></a>
+								<a href="javascript:void(0);"><?php echo esc_html($job['Job_Opening_Name'],'boston-careers'); ?></a>
 							</td>
-							<td data-label="DEPARTMENT"><?php echo esc_html($job['Department'],'hello-elementor-child'); ?></td>
-							<td data-label="LOCATION"><?php echo esc_html($job['State']).', '.esc_html($job['Country'],'hello-elementor-child'); ?></td>
+							<td data-label="DEPARTMENT"><?php echo esc_html($job['Department'],'boston-careers'); ?></td>
+							<td data-label="LOCATION"><?php echo esc_html($job['State']).', '.esc_html($job['Country'],'boston-careers'); ?></td>
 						</tr>
 					<?php endforeach; ?>
 				</tbody>
 			</table>
 			<?php
 		} else {
-			echo esc_html('No job listings found','hello-elementor-child');
+			echo esc_html('No job listings found','boston-careers');
 		}
 		return ob_get_clean(); // End output buffering and return the content
 	}
 
 }
-add_shortcode('job_listing_table', 'hello_elementor_child_job_listing_shortcode');
+add_shortcode('job_listing_table', 'boston_careers_job_listing_shortcode');
 
 
 /**
- * If the function, `hello_elementor_child_add_sync_page` doesn't exist.
+ * If the function, `boston_careers_add_sync_page` doesn't exist.
  */
-if ( ! function_exists( 'hello_elementor_child_add_sync_page' ) ) {
+if ( ! function_exists( 'boston_careers_add_sync_page' ) ) {
 	/**
 	 * function will create a custom setting page for job sync
 	 *
 	 * @since 1.0.0
 	*/
-    function hello_elementor_child_add_sync_page() {
+    function boston_careers_add_sync_page() {
 
         add_submenu_page(
             'edit.php?post_type=jobs',       // Parent slug (Jobs menu)
@@ -440,24 +517,24 @@ if ( ! function_exists( 'hello_elementor_child_add_sync_page' ) ) {
             'Sync Jobs',                 	 // Menu title
             'manage_options',                // Capability
             'sync-job-settings',             // Menu slug
-            'hello_elementor_child_sync_jobs' // Callback function
+            'boston_careers_sync_jobs' // Callback function
         );
     }
 
 }
-add_action( 'admin_menu', 'hello_elementor_child_add_sync_page' );
+add_action( 'admin_menu', 'boston_careers_add_sync_page' );
 
 
 /**
- * If the function, `hello_elementor_child_sync_jobs` doesn't exist.
+ * If the function, `boston_careers_sync_jobs` doesn't exist.
  */
-if ( ! function_exists( 'hello_elementor_child_sync_jobs' ) ) {
+if ( ! function_exists( 'boston_careers_sync_jobs' ) ) {
 	/**
 	 * fetch jobs from zoho recruit on sync jobs page.
 	 *
 	 * @since 1.0.0
 	*/
-	function hello_elementor_child_sync_jobs() {
+	function boston_careers_sync_jobs() {
 		$existing_jobs = get_posts([
 			'post_type' => 'jobs',
 			'post_status' => 'publish',
@@ -467,7 +544,7 @@ if ( ! function_exists( 'hello_elementor_child_sync_jobs' ) ) {
 	
 		$existing_titles = wp_list_pluck($existing_jobs, 'post_title'); // Get an array of existing job titles
 	
-		$jobs = hello_elementor_child_fetch_zoho_job_openings(); // Fetch the jobs from Zoho
+		$jobs = boston_careers_fetch_zoho_job_openings(); // Fetch the jobs from Zoho
 	
 		// Filter out jobs that are already present in the CPT
 		$new_jobs = array_filter($jobs, function($job) use ($existing_titles) {
@@ -476,15 +553,15 @@ if ( ! function_exists( 'hello_elementor_child_sync_jobs' ) ) {
 	
 		?>
 		<div class="wrap">
-			<h1><?php esc_html_e('Sync Jobs', 'hello-elementor-child'); ?></h1>
-			<h3><?php esc_html_e('Sync Jobs From Zoho Recruit', 'hello-elementor-child'); ?></h3>
+			<h1><?php esc_html_e('Sync Jobs', 'boston-careers'); ?></h1>
+			<h3><?php esc_html_e('Sync Jobs From Zoho Recruit', 'boston-careers'); ?></h3>
 			<?php if ( !empty($new_jobs) ) : ?>
 				<table class="widefat fixed" cellspacing="0">
 					<thead>
 						<tr>
-							<th><?php esc_html_e('Job Title', 'hello-elementor-child'); ?></th>
-							<th><?php esc_html_e('Location', 'hello-elementor-child'); ?></th>
-							<th><?php esc_html_e('Action', 'hello-elementor-child'); ?></th>
+							<th><?php esc_html_e('Job Title', 'boston-careers'); ?></th>
+							<th><?php esc_html_e('Location', 'boston-careers'); ?></th>
+							<th><?php esc_html_e('Action', 'boston-careers'); ?></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -492,13 +569,13 @@ if ( ! function_exists( 'hello_elementor_child_sync_jobs' ) ) {
 							<tr>
 								<td><?php echo esc_html($job['Job_Opening_Name']); ?></td>
 								<td><?php echo esc_html($job['State']) . ', ' . esc_html($job['Country']); ?></td>
-								<td><a href="javascript:void(0);" class="page-title-action sync-single-job"><?php esc_html_e('Sync', 'hello-elementor-child'); ?></a></td>
+								<td><a href="javascript:void(0);" class="page-title-action sync-single-job"><?php esc_html_e('Sync', 'boston-careers'); ?></a></td>
 							</tr>
 						<?php endforeach; ?>
 					</tbody>
 				</table>
 			<?php else : ?>
-				<p><?php esc_html_e('No new jobs to sync.', 'hello-elementor-child'); ?></p>
+				<p><?php esc_html_e('No new jobs to sync.', 'boston-careers'); ?></p>
 			<?php endif; ?>
 		</div>
 		<?php
