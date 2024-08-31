@@ -309,61 +309,26 @@ if ( ! function_exists( 'boston_careers_init_callback' ) ) {
 
 add_action( 'init', 'boston_careers_init_callback' );
 
+/**
+ * If the function, `boston_careers_admin_page_title_buttons_callback` doesn't exist.
+ */
+if ( ! function_exists( 'boston_careers_admin_page_title_buttons_callback' ) ) {
+	/**
+	 * Add custom button on the admin list, job post type.
+	 *
+	 * @since 1.0.0
+	 */
+	function boston_careers_admin_page_title_buttons_callback() {
+		$screen = get_current_screen();
 
-if ( ! function_exists( 'boston_careers_add_sync_button_to_jobs_list' ) ) {
-    function boston_careers_add_sync_button_to_jobs_list() {
-        $screen = get_current_screen();
-
-        // Only add the button on the Jobs post type listing page
-        if ( $screen->post_type == 'jobs' ) {
-            echo '<a href="' . admin_url( 'edit.php?post_type=jobs&sync_zoho_jobs=1' ) . '" class="page-title-action">Sync Jobs</a>';
-        }
-    }
+		// Only add the button on the Jobs post type listing page
+		if ( $screen->post_type == 'job' ) {
+			echo '<a href="' . admin_url( 'edit.php?post_type=job&sync_zoho_jobs=1' ) . '" class="page-title-action">' . __( 'Sync with Zoho Recruit', 'boston-careers' ) . '</a>';
+		}
+	}
 }
 
-add_action( 'admin_page_title_buttons', 'boston_careers_add_sync_button_to_jobs_list' );
-
-
-// /**
-//  * If the function, `boston_careers_zoho_crm_auth_token` doesn't exist.
-//  */
-// if ( ! function_exists( 'boston_careers_zoho_crm_auth_token' ) ) {
-// 	/**
-// 	 * Generate ZOHO CRM authentication code.
-// 	 *
-// 	 * @return
-// 	 */
-// 	function boston_careers_zoho_crm_auth_token() {
-// 		$response = wp_remote_post(
-// 			'https://accounts.zoho.com/oauth/v2/token',
-// 			array(
-// 				'method'      => 'POST',
-// 				'timeout'     => 45,
-// 				'headers'     => array(),
-// 				'body'        => array(
-// 					'grant_type'    => 'authorization_code',
-// 					'client_id'     => '1000.YTF6MHHC4DR21EOQ7HS8AAI4QSPKYZ',
-// 					'client_secret' => 'a25dbd4bf36647256bfd17ab8ed5069fda765a4a67',
-// 					'client_secret' => '',
-// 				),
-// 			)
-// 		);
-		
-// 		if ( is_wp_error( $response ) ) {
-// 			$error_message = $response->get_error_message();
-// 			echo "Something went wrong: $error_message";
-// 		} else {
-// 			echo 'Response:<pre>';
-// 			print_r( $response );
-// 			echo '</pre>';
-// 		}
-// 	}
-// }
-
-
-
-
-
+add_action( 'admin_page_title_buttons', 'boston_careers_admin_page_title_buttons_callback' );
 
 /**
  * If the function, `boston_careers_refresh_zoho_access_token` doesn't exist.
@@ -372,87 +337,119 @@ if ( ! function_exists( 'boston_careers_refresh_zoho_access_token' ) ) {
 	/**
 	 * Get refresh token generated from self client code.
 	 *
+	 * @return false|string
 	 * @since 1.0.0
 	 */
 	function boston_careers_refresh_zoho_access_token() {
+		// Get the zoho recruiters.
+		$zoho_client_id     = get_field( 'zoho_client_id', 'option' );
+		$zoho_client_secret = get_field( 'zoho_client_secret', 'option' );
+		$zoho_refresh_token = get_field( 'zoho_refresh_token', 'option' );
+		$zoho_token_url     = get_field( 'zoho_token_url', 'option' );
 
-		$zoho_client_id = get_field('zoho_client_id','option');
-		$zoho_client_secret = get_field('zoho_client_secret','option');
-		$zoho_refresh_token = get_field('zoho_refresh_token','option');
-		$zoho_token_url = get_field('zoho_token_url','option');
-
-		$client_id = $zoho_client_id;
-		$client_secret = $zoho_client_secret;
-		$refresh_token = $zoho_refresh_token;
-		$token_url = $zoho_token_url;
-
-		// Request a new access token using the refresh token
-		$response = wp_remote_post($token_url, array(
-			'body' => array(
-				'refresh_token' => $refresh_token,
-				'client_id' => $client_id,
-				'client_secret' => $client_secret,
-				'grant_type' => 'refresh_token',
-			),
-		));
-
-		if (is_wp_error($response)) {
-			error_log('Error refreshing Zoho access token: ' . $response->get_error_message());
+		// Return false, if either of the zoho API credentials are not available.
+		if (
+			( empty( $zoho_client_id ) || false === $zoho_client_id ) ||
+			( empty( $zoho_client_secret ) || false === $zoho_client_secret ) ||
+			( empty( $zoho_refresh_token ) || false === $zoho_refresh_token ) ||
+			( empty( $zoho_token_url ) || false === $zoho_token_url )
+		) {
 			return false;
 		}
 
-		$body = wp_remote_retrieve_body($response);
-		$data = json_decode($body, true);
+		// Request a new access token using the refresh token.
+		$response = wp_remote_post(
+			$zoho_token_url,
+			array(
+				'body' => array(
+					'refresh_token' => $zoho_refresh_token,
+					'client_id'     => $zoho_client_id,
+					'client_secret' => $zoho_client_secret,
+					'grant_type'    => 'refresh_token',
+				),
+			)
+		);
 
-		if (isset($data['access_token'])) {
-			return $data['access_token']; // Return the new access token
-		} else {
-			error_log('Failed to get new access token: ' . print_r($data, true));
+		// Return false, if the API returned an error response.
+		if ( is_wp_error( $response ) ) {
+			error_log( 'Error refreshing Zoho access token: ' . $response->get_error_message() );
+
 			return false;
 		}
+
+		// Get the response from the body.
+		$body = wp_remote_retrieve_body( $response );
+		$data = json_decode( $body, true );
+
+		// Return the new access token.
+		if ( isset( $data['access_token'] ) ) {
+			return $data['access_token'];
+		}
+
+		// Log the error if the access token is not received in the response.
+		error_log( 'Failed to get new access token: ' . print_r( $data, true ) );
+
+		return false;
 	}
 }
-
 
 /**
  * If the function, `boston_careers_fetch_zoho_job_openings` doesn't exist.
  */
 if ( ! function_exists( 'boston_careers_fetch_zoho_job_openings' ) ) {
-		/**
-		 * Fetch job openings from zoho portal.
-		 *
-		 * @since 1.0.0
-		 */
+	/**
+	 * Fetch job openings from zoho recruit portal.
+	 *
+	 * @return false|string
+	 * @since 1.0.0
+	 */
 	function boston_careers_fetch_zoho_job_openings() {
 		$access_token = boston_careers_refresh_zoho_access_token();
-		if (!$access_token) {
-			return false; // Exit if no valid token
-		}
 
-		$zoho_job_openings_url = get_field('zoho_job_openings_url','option');
-
-		$url = $zoho_job_openings_url;
-		$response = wp_remote_get($url, array(
-			'headers' => array(
-				'Authorization' => 'Zoho-oauthtoken ' . $access_token,
-			),
-		));
-
-		if (is_wp_error($response)) {
-			error_log('Error fetching Zoho job openings: ' . $response->get_error_message());
+		// Return false, if no access token is received.
+		if ( false === $access_token ) {
 			return false;
-		} else {
-			$body = wp_remote_retrieve_body($response);
-			$data = json_decode($body, true);
-			if (isset($data['data']) && is_array($data['data'])) {
-				return $data['data']; // Return the job openings data
-			} else {
-				return false;
-			}
 		}
+
+		$zoho_job_openings_url = get_field( 'zoho_job_openings_url', 'option' );
+
+		// Return false, if the API url is not given.
+		if ( empty( $zoho_job_openings_url ) || false === $zoho_job_openings_url ) {
+			return false;
+		}
+
+		// Hit the API.
+		$response = wp_remote_get(
+			$zoho_job_openings_url,
+			array(
+				'headers' => array(
+					'Authorization' => "Zoho-oauthtoken {$access_token}",
+				),
+			)
+		);
+
+		// Return false, if the API returned an error response.
+		if ( is_wp_error( $response ) ) {
+			error_log( 'Error refreshing Zoho job openings: ' . $response->get_error_message() );
+
+			return false;
+		}
+
+		// Get the response from the body.
+		$body = wp_remote_retrieve_body( $response );
+		$data = json_decode( $body, true );
+
+		// Return the job listings.
+		if ( isset($data['data'] ) && is_array( $data['data'] ) ) {
+			return $data['data'];
+		}
+
+		// Log the error if the job listing is not received in the response.
+		error_log( 'Failed to get job listings: ' . print_r( $data, true ) );
+
+		return false;
 	}
 }
-
 
 /**
  * If the function, `boston_careers_job_listing_shortcode` doesn't exist.
@@ -497,8 +494,45 @@ if ( ! function_exists( 'boston_careers_job_listing_shortcode' ) ) {
 	}
 
 }
-add_shortcode('job_listing_table', 'boston_careers_job_listing_shortcode');
 
+add_shortcode( 'job_listing_table', 'boston_careers_job_listing_shortcode' );
+
+
+// /**
+//  * If the function, `boston_careers_zoho_crm_auth_token` doesn't exist.
+//  */
+// if ( ! function_exists( 'boston_careers_zoho_crm_auth_token' ) ) {
+// 	/**
+// 	 * Generate ZOHO CRM authentication code.
+// 	 *
+// 	 * @return
+// 	 */
+// 	function boston_careers_zoho_crm_auth_token() {
+// 		$response = wp_remote_post(
+// 			'https://accounts.zoho.com/oauth/v2/token',
+// 			array(
+// 				'method'      => 'POST',
+// 				'timeout'     => 45,
+// 				'headers'     => array(),
+// 				'body'        => array(
+// 					'grant_type'    => 'authorization_code',
+// 					'client_id'     => '1000.YTF6MHHC4DR21EOQ7HS8AAI4QSPKYZ',
+// 					'client_secret' => 'a25dbd4bf36647256bfd17ab8ed5069fda765a4a67',
+// 					'client_secret' => '',
+// 				),
+// 			)
+// 		);
+		
+// 		if ( is_wp_error( $response ) ) {
+// 			$error_message = $response->get_error_message();
+// 			echo "Something went wrong: $error_message";
+// 		} else {
+// 			echo 'Response:<pre>';
+// 			print_r( $response );
+// 			echo '</pre>';
+// 		}
+// 	}
+// }
 
 /**
  * If the function, `boston_careers_add_sync_page` doesn't exist.
@@ -509,17 +543,17 @@ if ( ! function_exists( 'boston_careers_add_sync_page' ) ) {
 	 *
 	 * @since 1.0.0
 	*/
-    function boston_careers_add_sync_page() {
+	function boston_careers_add_sync_page() {
 
-        add_submenu_page(
-            'edit.php?post_type=jobs',       // Parent slug (Jobs menu)
-            'Sync Job Settings',             // Page title
-            'Sync Jobs',                 	 // Menu title
-            'manage_options',                // Capability
-            'sync-job-settings',             // Menu slug
-            'boston_careers_sync_jobs' // Callback function
-        );
-    }
+		add_submenu_page(
+			'edit.php?post_type=jobs',       // Parent slug (Jobs menu)
+			'Sync Job Settings',             // Page title
+			'Sync Jobs',                 	 // Menu title
+			'manage_options',                // Capability
+			'sync-job-settings',             // Menu slug
+			'boston_careers_sync_jobs' // Callback function
+		);
+	}
 
 }
 add_action( 'admin_menu', 'boston_careers_add_sync_page' );
