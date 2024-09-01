@@ -323,8 +323,8 @@ if ( ! function_exists( 'boston_careers_admin_head_edit_php_callback' ) ) {
 	 */
 	function boston_careers_admin_head_edit_php_callback() {
 		$screen      = get_current_screen();
-		$button_text = __( 'Sync with Zoho Recruit', 'boston-careers' );
-		$button_url  = admin_url( 'edit.php?post_type=job&sync_zoho_jobs=1' );
+		$button_text = __( 'Sync Zoho Recruit', 'boston-careers' );
+		$button_url  = admin_url( 'edit.php?post_type=job&page=sync-job' );
 
 		// Only add the button on the Jobs post type listing page
 		if ( 'job' === $screen->post_type ) {
@@ -334,7 +334,7 @@ if ( ! function_exists( 'boston_careers_admin_head_edit_php_callback' ) ) {
 				var button_url  = '<?php echo $button_url; ?>';
 
 				jQuery( document ).ready( function() {
-					jQuery( '.wrap h2' ).append( '<a href="' + button_url + '" class="page-title-action">' + button_text + '</a>' );
+					jQuery( '<a href="' + button_url + '" class="page-title-action">' + button_text + '</a>' ).insertAfter( '.wrap a.page-title-action' );
 				} );
 			</script>
 			<?php
@@ -537,7 +537,7 @@ if ( ! function_exists( 'boston_careers_admin_menu_callback' ) ) {
 			__( 'Sync Job Settings', 'boston-careers' ),
 			__( 'Sync Jobs', 'boston-careers' ),
 			'manage_options',
-			'sync-job-settings',
+			'sync-job',
 			'boston_careers_sync_jobs'
 		);
 	}
@@ -555,53 +555,40 @@ if ( ! function_exists( 'boston_careers_sync_jobs' ) ) {
 	 * @since 1.0.0
 	*/
 	function boston_careers_sync_jobs() {
-		$existing_jobs = boston_careers_get_posts( 'job' );
-
-		debug( $existing_jobs );
-		die;
-
-		$existing_jobs = get_posts([
-			'post_type' => 'jobs',
-			'post_status' => 'publish',
-			'posts_per_page' => -1,
-			'fields' => 'titles', // Get only the titles
-		]);
-	
+		$existing_jobs   = boston_careers_get_posts( 'job' );
 		$existing_titles = wp_list_pluck($existing_jobs, 'post_title'); // Get an array of existing job titles
-	
-		$jobs = boston_careers_fetch_zoho_job_openings(); // Fetch the jobs from Zoho
-	
+		$jobs            = boston_careers_fetch_zoho_job_openings(); // Fetch the jobs from Zoho
+
 		// Filter out jobs that are already present in the CPT
-		$new_jobs = array_filter($jobs, function($job) use ($existing_titles) {
-			return !in_array($job['Job_Opening_Name'], $existing_titles);
-		});
-	
+		$new_jobs = array_filter( $jobs, function( $job ) use ( $existing_titles ) {
+			return ( ! in_array( $job['Job_Opening_Name'], $existing_titles ) );
+		} );
 		?>
 		<div class="wrap">
-			<h1><?php esc_html_e('Sync Jobs', 'boston-careers'); ?></h1>
-			<h3><?php esc_html_e('Sync Jobs From Zoho Recruit', 'boston-careers'); ?></h3>
-			<?php if ( !empty($new_jobs) ) : ?>
+			<h1><?php esc_html_e( 'Sync Jobs', 'boston-careers' ); ?></h1>
+			<h3><?php esc_html_e( 'Sync Jobs From Zoho Recruit', 'boston-careers' ); ?></h3>
+			<?php if ( ! empty( $new_jobs ) ) { ?>
 				<table class="widefat fixed" cellspacing="0">
 					<thead>
 						<tr>
-							<th><?php esc_html_e('Job Title', 'boston-careers'); ?></th>
-							<th><?php esc_html_e('Location', 'boston-careers'); ?></th>
-							<th><?php esc_html_e('Action', 'boston-careers'); ?></th>
+							<th><?php esc_html_e( 'Job Title', 'boston-careers' ); ?></th>
+							<th><?php esc_html_e( 'Location', 'boston-careers' ); ?></th>
+							<th><?php esc_html_e( 'Action', 'boston-careers' ); ?></th>
 						</tr>
 					</thead>
 					<tbody>
-						<?php foreach ($new_jobs as $job) : ?>
+						<?php foreach ( $new_jobs as $job ) { ?>
 							<tr>
-								<td><?php echo esc_html($job['Job_Opening_Name']); ?></td>
-								<td><?php echo esc_html($job['State']) . ', ' . esc_html($job['Country']); ?></td>
-								<td><a href="javascript:void(0);" class="page-title-action sync-single-job"><?php esc_html_e('Sync', 'boston-careers'); ?></a></td>
+								<td><?php echo esc_html( $job['Job_Opening_Name'] ); ?></td>
+								<td><?php echo esc_html( $job['State'] ) . ', ' . esc_html( $job['Country'] ); ?></td>
+								<td><a href="javascript:void(0);" class="page-title-action sync-single-job"><?php esc_html_e( 'Sync', 'boston-careers' ); ?></a></td>
 							</tr>
-						<?php endforeach; ?>
+						<?php } ?>
 					</tbody>
 				</table>
-			<?php else : ?>
-				<p><?php esc_html_e('No new jobs to sync.', 'boston-careers'); ?></p>
-			<?php endif; ?>
+			<?php } else { ?>
+				<p><?php esc_html_e( 'No new jobs to sync.', 'boston-careers' ); ?></p>
+			<?php } ?>
 		</div>
 		<?php
 	}
@@ -654,6 +641,33 @@ if ( ! function_exists( 'boston_careers_sync_single_job_callback' ) ) {
 }
 
 add_action( 'wp_ajax_sync_single_job', 'boston_careers_sync_single_job_callback' );
+
+/**
+ * If the function, `boston_careers_posts_args_callback` doesn't exist.
+ */
+if ( ! function_exists( 'boston_careers_posts_args_callback' ) ) {
+	/**
+	 * Override the wp post query arguments.
+	 *
+	 * @param $args array WP_Query post arguments.
+	 *
+	 * @return array
+	 *
+	 * @since 1.0.0
+	 */
+	function boston_careers_posts_args_callback( $args ) {
+		$admin_screen = get_current_screen();
+
+		// If it's the sync screen.
+		if ( ! empty( $admin_screen->base ) && 'job_page_sync-job' === $admin_screen->base ) {
+			$args['fields'] = 'titles';
+		}
+
+		return $args;
+	}
+}
+
+add_filter( 'boston_careers_posts_args', 'boston_careers_posts_args_callback' );
 
 /**
  * If the function, `boston_careers_zoho_crm_auth_token` doesn't exist.
