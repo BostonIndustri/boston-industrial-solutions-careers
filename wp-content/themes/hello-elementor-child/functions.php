@@ -89,8 +89,8 @@ if ( ! function_exists( 'boston_careers_wp_admin_enqueue_scripts_callback' ) ) {
 			'boston-careers-admin',
 			'Boston_Careers_Admin_Js_Props',
 			array(
-				'ajax_url'   => admin_url('admin-ajax.php'),
-				'ajax_nonce' => wp_create_nonce('bis_admin_nonce')
+				'ajax_url'   => admin_url( 'admin-ajax.php' ),
+				'ajax_nonce' => wp_create_nonce( 'bis_admin_nonce' ),
 			)
 		);
 
@@ -313,25 +313,36 @@ if ( ! function_exists( 'boston_careers_init_callback' ) ) {
 add_action( 'init', 'boston_careers_init_callback' );
 
 /**
- * If the function, `boston_careers_admin_page_title_buttons_callback` doesn't exist.
+ * If the function, `boston_careers_admin_head_edit_php_callback` doesn't exist.
  */
-if ( ! function_exists( 'boston_careers_admin_page_title_buttons_callback' ) ) {
+if ( ! function_exists( 'boston_careers_admin_head_edit_php_callback' ) ) {
 	/**
 	 * Add custom button on the admin list, job post type.
 	 *
 	 * @since 1.0.0
 	 */
-	function boston_careers_admin_page_title_buttons_callback() {
-		$screen = get_current_screen();
+	function boston_careers_admin_head_edit_php_callback() {
+		$screen      = get_current_screen();
+		$button_text = __( 'Sync with Zoho Recruit', 'boston-careers' );
+		$button_url  = admin_url( 'edit.php?post_type=job&sync_zoho_jobs=1' );
 
 		// Only add the button on the Jobs post type listing page
-		if ( $screen->post_type == 'job' ) {
-			echo '<a href="' . admin_url( 'edit.php?post_type=job&sync_zoho_jobs=1' ) . '" class="page-title-action">' . __( 'Sync with Zoho Recruit', 'boston-careers' ) . '</a>';
+		if ( 'job' === $screen->post_type ) {
+			?>
+			<script type="text/javascript">
+				var button_text = '<?php echo $button_text; ?>';
+				var button_url  = '<?php echo $button_url; ?>';
+
+				jQuery( document ).ready( function() {
+					jQuery( jQuery( '.wrap h2' )[0]).append( '<a href="' + button_url + '" class="page-title-action">' + button_text + '</a>' );
+				} );
+			</script>
+			<?php
 		}
 	}
 }
 
-add_action( 'admin_page_title_buttons', 'boston_careers_admin_page_title_buttons_callback' );
+add_action( 'admin_head-edit.php', 'boston_careers_admin_head_edit_php_callback' );
 
 /**
  * If the function, `boston_careers_refresh_zoho_access_token` doesn't exist.
