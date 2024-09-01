@@ -326,8 +326,6 @@ if ( ! function_exists( 'boston_careers_admin_head_edit_php_callback' ) ) {
 		$button_text = __( 'Sync with Zoho Recruit', 'boston-careers' );
 		$button_url  = admin_url( 'edit.php?post_type=job&sync_zoho_jobs=1' );
 
-		debug( $screen ); die;
-
 		// Only add the button on the Jobs post type listing page
 		if ( 'job' === $screen->post_type ) {
 			?>
@@ -336,7 +334,7 @@ if ( ! function_exists( 'boston_careers_admin_head_edit_php_callback' ) ) {
 				var button_url  = '<?php echo $button_url; ?>';
 
 				jQuery( document ).ready( function() {
-					jQuery( jQuery( '.wrap h2' )[0]).append( '<a href="' + button_url + '" class="page-title-action">' + button_text + '</a>' );
+					jQuery( '.wrap h2' ).append( '<a href="' + button_url + '" class="page-title-action">' + button_text + '</a>' );
 				} );
 			</script>
 			<?php
