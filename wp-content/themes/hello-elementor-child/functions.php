@@ -555,9 +555,16 @@ if ( ! function_exists( 'boston_careers_sync_jobs' ) ) {
 	 * @since 1.0.0
 	*/
 	function boston_careers_sync_jobs() {
-		$existing_jobs   = boston_careers_get_posts( 'job' );
+		$existing_jobs = get_posts([
+			'post_type' => 'jobs',
+			'post_status' => 'publish',
+			'posts_per_page' => -1,
+			'fields' => 'titles', // Get only the titles
+		]);
+	
 		$existing_titles = wp_list_pluck($existing_jobs, 'post_title'); // Get an array of existing job titles
-		$jobs            = boston_careers_fetch_zoho_job_openings(); // Fetch the jobs from Zoho
+
+		$jobs = hello_elementor_child_fetch_zoho_job_openings(); // Fetch the jobs from Zoho
 
 		// Filter out jobs that are already present in the CPT
 		$new_jobs = array_filter( $jobs, function( $job ) use ( $existing_titles ) {
