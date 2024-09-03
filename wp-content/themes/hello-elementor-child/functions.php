@@ -656,10 +656,10 @@ if ( ! function_exists( 'boston_careers_posts_args_callback' ) ) {
 	 * @since 1.0.0
 	 */
 	function boston_careers_posts_args_callback( $args ) {
-		$admin_screen = get_current_screen();
+		global $current_screen;
 
-		// If it's the sync screen.
-		if ( ! empty( $admin_screen->base ) && 'job_page_sync-job' === $admin_screen->base ) {
+		// // If it's the sync screen.
+		if ( ! empty( $current_screen->base ) && 'job_page_sync-job' === $current_screen->base ) {
 			$args['fields'] = 'titles';
 		}
 
