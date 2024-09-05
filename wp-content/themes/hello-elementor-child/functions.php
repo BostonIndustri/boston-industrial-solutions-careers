@@ -559,7 +559,7 @@ if ( ! function_exists( 'boston_careers_sync_jobs' ) ) {
 	
 		$existing_titles = wp_list_pluck($jobs_query, 'post_title'); // Get an array of existing job titles
 		// Filter out jobs that are already present in the CPT
-		$new_jobs = array_filter( $jobs, function( $job ) use ( $existing_titles ) {
+		$new_jobs = array_filter( $jobs_query, function( $job ) use ( $existing_titles ) {
 			return ( ! in_array( $job['Job_Opening_Name'], $existing_titles ) );
 		} );
 		?>
