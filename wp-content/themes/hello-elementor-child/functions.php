@@ -452,7 +452,7 @@ if ( ! function_exists( 'boston_careers_fetch_zoho_job_openings' ) ) {
 		// Get the response from the body.
 		$body = wp_remote_retrieve_body( $response );
 		$data = json_decode( $body, true );
-
+		debug($data);
 		// Return the job listings.
 		if ( isset($data['data'] ) && is_array( $data['data'] ) ) {
 			return $data['data'];
