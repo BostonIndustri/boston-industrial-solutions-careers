@@ -452,7 +452,7 @@ if ( ! function_exists( 'boston_careers_fetch_zoho_job_openings' ) ) {
 		// Get the response from the body.
 		$body = wp_remote_retrieve_body( $response );
 		$data = json_decode( $body, true );
-		debug($data);
+		// debug($data);
 		// Return the job listings.
 		if ( isset($data['data'] ) && is_array( $data['data'] ) ) {
 			return $data['data'];
@@ -563,7 +563,7 @@ if ( ! function_exists( 'boston_careers_sync_jobs' ) ) {
 		$existing_titles = wp_list_pluck($jobs, 'post_title'); // Get an array of existing job titles
 	
 		$zoho_jobs = boston_careers_fetch_zoho_job_openings(); // Fetch jobs from Zoho Recruit
-	
+		debug($zoho_jobs);
 		// Filter out jobs that are already present in the CPT
 		$new_jobs = array_filter($zoho_jobs, function($job) use ($existing_titles) {
 			return !in_array($job['Job_Opening_Name'], $existing_titles);
