@@ -555,12 +555,7 @@ if ( ! function_exists( 'boston_careers_sync_jobs' ) ) {
 	 * @since 1.0.0
 	*/
 	function boston_careers_sync_jobs() {
-		$existing_jobs = get_posts([
-			'post_type' => 'job',
-			'post_status' => 'publish',
-			'posts_per_page' => -1,
-			'fields' => 'titles', // Get only the titles
-		]);
+		$jobs_query = boston_careers_get_posts( 'job' ); // Fetch the jobs.
 	
 		$existing_titles = wp_list_pluck($existing_jobs, 'post_title'); // Get an array of existing job titles
 		// Filter out jobs that are already present in the CPT
