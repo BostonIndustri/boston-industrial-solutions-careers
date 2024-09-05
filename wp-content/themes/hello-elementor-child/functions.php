@@ -616,6 +616,7 @@ if ( ! function_exists( 'boston_careers_sync_single_job_callback' ) ) {
 		// check_ajax_referer('nonce', 'security');
 		// Get the job title from the request.
 		$job_title = filter_input( INPUT_POST, 'job_title', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		$job_id = filter_input( INPUT_POST, 'job_id', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
 		// Create a new post in the 'jobs' CPT.
 		$post_id = wp_insert_post(
@@ -626,6 +627,7 @@ if ( ! function_exists( 'boston_careers_sync_single_job_callback' ) ) {
 				'meta_input'  => array(
 					'source'         => 'zoho-recruit',
 					'sync_date_time' => time(),
+					'zoho_job_id'    => $job_id, // Store the Zoho job ID
 				),
 			)
 		);

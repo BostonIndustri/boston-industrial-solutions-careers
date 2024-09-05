@@ -13,13 +13,14 @@ jQuery( document ).ready( function( $ ) {
 			
 			// Get job title from the table cell.
 			var jobTitle = $( this ).closest( 'tr' ).find( 'td:first' ).text().trim();
-	
+			var jobId = $( this ).data( 'jobid' );
 			$.ajax( {
 				url: ajax_url,
 				type: 'POST',
 				data: {
 					action: 'sync_single_job',
 					job_title: jobTitle,
+					job_id: jobId,
 					ajax_nonce: ajax_nonce,
 				},
 				success: function( response ) {
