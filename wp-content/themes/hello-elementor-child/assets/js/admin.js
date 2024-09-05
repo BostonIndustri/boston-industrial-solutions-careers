@@ -25,7 +25,8 @@ jQuery( document ).ready( function( $ ) {
 				success: function( response ) {
 					if ( response.success ) {
 						console.log( 'Job synced successfully!' );
-						$( this ).text( 'Sync' );
+						$( '.sync-single-job' ).text( 'Sync' );
+						location.reload();
 					} else {
 						console.warn( 'Failed to sync job: ' + response.data );
 					}
