@@ -563,7 +563,7 @@ if ( ! function_exists( 'boston_careers_sync_jobs' ) ) {
 		$existing_titles = wp_list_pluck($jobs, 'post_title'); // Get an array of existing job titles
 	
 		$zoho_jobs = boston_careers_fetch_zoho_job_openings(); // Fetch jobs from Zoho Recruit
-		debug($zoho_jobs);
+		// debug($zoho_jobs);
 		// Filter out jobs that are already present in the CPT
 		$new_jobs = array_filter($zoho_jobs, function($job) use ($existing_titles) {
 			return !in_array($job['Job_Opening_Name'], $existing_titles);
@@ -588,7 +588,7 @@ if ( ! function_exists( 'boston_careers_sync_jobs' ) ) {
 							<tr>
 								<td><?php echo esc_html($job['Job_Opening_Name']); ?></td>
 								<td><?php echo esc_html($job['State']) . ', ' . esc_html($job['Country']); ?></td>
-								<td><a href="javascript:void(0);" class="page-title-action sync-single-job"><?php esc_html_e('Sync', 'boston-careers'); ?></a></td>
+								<td><a href="javascript:void(0);" data-jobid="<?php echo esc_html($job['Job_Opening_ID']); ?>" class="page-title-action sync-single-job"><?php esc_html_e('Sync', 'boston-careers'); ?></a></td>
 							</tr>
 						<?php } ?>
 					</tbody>
