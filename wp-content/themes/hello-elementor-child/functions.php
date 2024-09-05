@@ -480,7 +480,7 @@ if ( ! function_exists( 'boston_careers_job_listing_table_callback' ) ) {
 	*/
 	function boston_careers_job_listing_table_callback( $args = array() ) {
 		$jobs_query = boston_careers_get_posts( 'job' ); // Fetch the jobs.
-
+		
 		// Start output buffering
 		ob_start();
 		?>
