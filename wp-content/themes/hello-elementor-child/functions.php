@@ -556,7 +556,7 @@ if ( ! function_exists( 'boston_careers_sync_jobs' ) ) {
 	*/
 	function boston_careers_sync_jobs() {
 		$existing_jobs = get_posts([
-			'post_type' => 'jobs',
+			'post_type' => 'job',
 			'post_status' => 'publish',
 			'posts_per_page' => -1,
 			'fields' => 'titles', // Get only the titles
