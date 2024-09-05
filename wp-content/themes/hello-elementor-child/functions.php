@@ -520,7 +520,7 @@ if ( ! function_exists( 'boston_careers_job_listing_table_callback' ) ) {
 
 }
 
-add_shortcode( 'job_listing_table', 'boston_careers_job_listing_table_callback' );
+// add_shortcode( 'job_listing_table', 'boston_careers_job_listing_table_callback' );
 
 /**
  * If the function, `boston_careers_admin_menu_callback` doesn't exist.
