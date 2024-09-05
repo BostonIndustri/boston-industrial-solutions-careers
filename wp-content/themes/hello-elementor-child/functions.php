@@ -555,42 +555,51 @@ if ( ! function_exists( 'boston_careers_sync_jobs' ) ) {
 	 * @since 1.0.0
 	*/
 	function boston_careers_sync_jobs() {
-		$jobs_query = boston_careers_get_posts( 'job' ); // Fetch the jobs.
+		$jobs_query = boston_careers_get_posts('job'); // Fetch the jobs.
 	
-		$existing_titles = wp_list_pluck($jobs_query, 'post_title'); // Get an array of existing job titles
+		// Convert WP_Query object to an array of posts
+		$jobs = $jobs_query->posts; 
+	
+		$existing_titles = wp_list_pluck($jobs, 'post_title'); // Get an array of existing job titles
+	
+		$zoho_jobs = boston_careers_fetch_zoho_job_openings(); // Fetch jobs from Zoho Recruit
+	
 		// Filter out jobs that are already present in the CPT
-		$new_jobs = array_filter( $jobs_query, function( $job ) use ( $existing_titles ) {
-			return ( ! in_array( $job['Job_Opening_Name'], $existing_titles ) );
-		} );
+		$new_jobs = array_filter($zoho_jobs, function($job) use ($existing_titles) {
+			return !in_array($job['Job_Opening_Name'], $existing_titles);
+		});
+	
+		// Your existing HTML code to display jobs
 		?>
 		<div class="wrap">
-			<h1><?php esc_html_e( 'Sync Jobs', 'boston-careers' ); ?></h1>
-			<h3><?php esc_html_e( 'Sync Jobs From Zoho Recruit', 'boston-careers' ); ?></h3>
-			<?php if ( ! empty( $new_jobs ) ) { ?>
+			<h1><?php esc_html_e('Sync Jobs', 'boston-careers'); ?></h1>
+			<h3><?php esc_html_e('Sync Jobs From Zoho Recruit', 'boston-careers'); ?></h3>
+			<?php if (!empty($new_jobs)) { ?>
 				<table class="widefat fixed" cellspacing="0">
 					<thead>
 						<tr>
-							<th><?php esc_html_e( 'Job Title', 'boston-careers' ); ?></th>
-							<th><?php esc_html_e( 'Location', 'boston-careers' ); ?></th>
-							<th><?php esc_html_e( 'Action', 'boston-careers' ); ?></th>
+							<th><?php esc_html_e('Job Title', 'boston-careers'); ?></th>
+							<th><?php esc_html_e('Location', 'boston-careers'); ?></th>
+							<th><?php esc_html_e('Action', 'boston-careers'); ?></th>
 						</tr>
 					</thead>
 					<tbody>
-						<?php foreach ( $new_jobs as $job ) { ?>
+						<?php foreach ($new_jobs as $job) { ?>
 							<tr>
-								<td><?php echo esc_html( $job['Job_Opening_Name'] ); ?></td>
-								<td><?php echo esc_html( $job['State'] ) . ', ' . esc_html( $job['Country'] ); ?></td>
-								<td><a href="javascript:void(0);" class="page-title-action sync-single-job"><?php esc_html_e( 'Sync', 'boston-careers' ); ?></a></td>
+								<td><?php echo esc_html($job['Job_Opening_Name']); ?></td>
+								<td><?php echo esc_html($job['State']) . ', ' . esc_html($job['Country']); ?></td>
+								<td><a href="javascript:void(0);" class="page-title-action sync-single-job"><?php esc_html_e('Sync', 'boston-careers'); ?></a></td>
 							</tr>
 						<?php } ?>
 					</tbody>
 				</table>
 			<?php } else { ?>
-				<p><?php esc_html_e( 'No new jobs to sync.', 'boston-careers' ); ?></p>
+				<p><?php esc_html_e('No new jobs to sync.', 'boston-careers'); ?></p>
 			<?php } ?>
 		</div>
 		<?php
 	}
+	
 }
 
 /**
