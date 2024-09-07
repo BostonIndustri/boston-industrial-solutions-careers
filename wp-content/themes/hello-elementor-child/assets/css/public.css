@@ -68,8 +68,8 @@ section.job-secondblock .jobdetailsbox .jobdetailsbox-left {
     padding-right: 80px;
 }
 section.job-secondblock .jobdetailsbox .jobdetailsbox-right {
-    width: 400px;
-    flex: 0 0 400px;
+    width: 300px;
+    flex: 0 0 300px;
 }
 
 
@@ -133,4 +133,27 @@ section.job-secondblock .jobdetailsbox .jobdetailsbox-left p {
     font-weight: 400;
     line-height: 26px;
     word-spacing: 0.03em;
+}
+
+section.job-secondblock .jobdetailsbox .jobdetailsbox-right a.applyjobbtn {
+    background: #ee7c1b;
+    width: 100%;
+    display: block;
+    color: #242424;
+    font-family: "Poppins", Sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 26px;
+    word-spacing: 0;
+    padding: 8px;
+    text-align: center;
+    border-radius: 3px;
+}
+
+
+.weofferbox {
+    border: solid 2px #DDDDDD;
+    margin: 25px 0;
+    padding: 15px;
+    border-radius: 2px;
 }

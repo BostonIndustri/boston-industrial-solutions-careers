@@ -81,34 +81,36 @@
                 </div>
             </div>
             <div class="jobdetailsbox-right">
-                <a class="applyjobbtn" href="javascript:void(0);">
-                    APPLY FOR THIS POSITION
-                </a>
-
-                <div class="weofferbox">
-                    <h4>We offer:</h4>
-                    <ul>
-                        <li>
-                             Dynamic global organization with a history of innovation and strong product portfolio
-                        </li>
-                        <li>
-                             Challenging environment combined with a supportive management structure
-                        </li>
-                        <li>
-                             Career development and growth
-                        </li>
-                        <li>
-                             Competitive salary and benefit package
-                        </li>
-                        <li>
-                             Friendly work environment surrounded by dedicated and professional colleagues
-                        </li>
-                        <li>
-                             Full training on all aspects of our inkjet machines with a training plan
-                        </li>
-                    </ul>
+                <div class="jobpositnstocky">
+                    <a class="applyjobbtn" href="javascript:void(0);">
+                        APPLY FOR THIS POSITION
+                    </a>    
+                    <div class="weofferbox">
+                        <h4>We offer:</h4>
+                            <ul>    
+                                <li>
+                                    Dynamic global organization with a history of innovation and strong product portfolio
+                                </li>
+                                <li>
+                                    Challenging environment combined with a supportive management structure
+                                </li>
+                                <li>
+                                    Career development and growth
+                                </li>
+                                <li>
+                                    Competitive salary and benefit package
+                                </li>
+                                <li>
+                                    Friendly work environment surrounded by dedicated and professional colleagues
+                                </li>
+                                <li>
+                                    Full training on all aspects of our inkjet machines with a training plan
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </div>    
         </div>
     </div>
 </section>
