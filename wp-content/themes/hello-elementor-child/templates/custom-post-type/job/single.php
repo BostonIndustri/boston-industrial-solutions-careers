@@ -30,25 +30,25 @@
                     <h3>Duties and Responsibilities:</h3>    
                     <ul>
                         <li>
-                            • Perform installations and repairs of digital inkjet equipment at customer sites
+                             Perform installations and repairs of digital inkjet equipment at customer sites
                         </li>
                         <li>
-                            • Provide training to customers on proper operation and maintenance of equipment, digital file preparation, and RIP processing 
+                             Provide training to customers on proper operation and maintenance of equipment, digital file preparation, and RIP processing 
                         </li>
                         <li>
-                            • Remote customer support and troubleshooting, as well as on-site service as needed
+                             Remote customer support and troubleshooting, as well as on-site service as needed
                         </li>
                         <li>
-                            • Effectively communicate and obtain appropriate data needed to identify, analyze, and resolve service requirements
+                             Effectively communicate and obtain appropriate data needed to identify, analyze, and resolve service requirements
                         </li>
                         <li>
-                            • Clearly communicate problem solutions through database entries, written reports and verbal communication with customers and colleagues
+                             Clearly communicate problem solutions through database entries, written reports and verbal communication with customers and colleagues
                         </li>
                         <li>
-                            • Maintaining of demonstration and test facilities
+                             Maintaining of demonstration and test facilities
                         </li>
                         <li>
-                            • Imaging of printed samples for customers and marketing
+                             Imaging of printed samples for customers and marketing
                         </li>
                     </ul>
                 </div>
@@ -57,31 +57,31 @@
                     <h3>Qualifications:</h3>    
                     <ul>
                         <li>
-                            • Associate Degree or equivalent vocational training in a related field
+                             Associate Degree or equivalent vocational training in a related field
                         </li>
                         <li>
-                            • Basic Graphic Arts skills with working knowledge of Adobe Creative Suite 
+                             Basic Graphic Arts skills with working knowledge of Adobe Creative Suite 
                         </li>
                         <li>
-                            • Experience in servicing and operating inkjet printing or similar equipment in a print production environment
+                             Experience in servicing and operating inkjet printing or similar equipment in a print production environment
                         </li>
                         <li>
-                            • Ability to work independently as well as part of a team
+                             Ability to work independently as well as part of a team
                         </li>
                         <li>
-                            • Should possess strong collaborative abilities, to not only obtain assistance form colleagues but also provide support when needed
+                             Should possess strong collaborative abilities, to not only obtain assistance form colleagues but also provide support when needed
                         </li>
                         <li>
-                            • Must have good colour vision and attention to detail
+                             Must have good colour vision and attention to detail
                         </li>
                         <li>
-                            • Strong aptitude for customer relations and communication skills
+                             Strong aptitude for customer relations and communication skills
                         </li>
                     </ul>
                 </div>
             </div>
             <div class="jobdetailsbox-right">
-                <a href="javascript:void(0);">
+                <a class="applyjobbtn" href="javascript:void(0);">
                     APPLY FOR THIS POSITION
                 </a>
 
@@ -89,22 +89,22 @@
                     <h4>We offer:</h4>
                     <ul>
                         <li>
-                            • Dynamic global organization with a history of innovation and strong product portfolio
+                             Dynamic global organization with a history of innovation and strong product portfolio
                         </li>
                         <li>
-                            • Challenging environment combined with a supportive management structure
+                             Challenging environment combined with a supportive management structure
                         </li>
                         <li>
-                            • Career development and growth
+                             Career development and growth
                         </li>
                         <li>
-                            • Competitive salary and benefit package
+                             Competitive salary and benefit package
                         </li>
                         <li>
-                            • Friendly work environment surrounded by dedicated and professional colleagues
+                             Friendly work environment surrounded by dedicated and professional colleagues
                         </li>
                         <li>
-                            • Full training on all aspects of our inkjet machines with a training plan
+                             Full training on all aspects of our inkjet machines with a training plan
                         </li>
                     </ul>
                 </div>

@@ -1,1 +1,136 @@
 .sample-line {color: blue;}
+section.job-detail-main {
+    padding: 40px 0 20px;
+}
+.container-boston {
+    max-width: 1140px;
+    margin: 0 auto;
+}
+
+
+section.job-detail-main .container-boston h1 {
+    color: #222222;
+    font-family: "Poppins", Sans-serif;
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 42px;
+    margin: 0 auto 15px;
+    display: block;
+    text-align: center;
+    border-bottom: solid 2px #DDDDDD;
+    padding-bottom: 25px;
+}
+
+section.job-detail-main .container-boston .boosten-bradcom ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+}
+
+section.job-detail-main .container-boston .boosten-bradcom ul li {
+    padding-right: 20px;
+    position: relative;
+    color: #242424;
+    font-family: "Poppins", Sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 26px;
+}
+section.job-detail-main .container-boston .boosten-bradcom ul li:after {
+    content: "\203A";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 15px;
+    font-size: 30px;
+    line-height: 20px;
+    font-weight: 500;
+    font-family: system-ui;
+}
+
+section.job-detail-main .container-boston .boosten-bradcom ul li:last-child {
+    padding-right: 0px;
+}
+
+section.job-detail-main .container-boston .boosten-bradcom ul li:last-child:after{display: none;}
+
+
+section.job-secondblock {
+    padding: 0 0 40px;
+}
+
+
+section.job-secondblock .jobdetailsbox {
+    display: flex;
+}
+
+section.job-secondblock .jobdetailsbox .jobdetailsbox-left {
+    padding-right: 80px;
+}
+section.job-secondblock .jobdetailsbox .jobdetailsbox-right {
+    width: 400px;
+    flex: 0 0 400px;
+}
+
+
+
+section.job-secondblock .jobdetailsbox .jobdetailsbox-left h2 {
+    color: #222222;
+    font-family: "Poppins", Sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 38px;
+    margin: 0 0 25px;
+    padding-bottom: 10px;
+    border-bottom: solid 2px #DDDDDD;
+    display: flex;
+    align-items: flex-end;
+    align-content: flex-end;
+    justify-content: space-between;
+}
+
+section.job-secondblock .jobdetailsbox .jobdetailsbox-left h2 span {
+    font-size: 12px;
+    display: flex;
+    align-items: flex-end;
+    line-height: 20px;
+    font-weight: 400;
+}
+
+
+section.job-secondblock .jobdetailsbox .jobdetailsbox-left p {
+    color: #242424;
+    font-family: "Poppins", Sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 26px;
+    word-spacing: 0.03em;
+}
+.jobdetailsboxwithlist {
+    margin: 0 0 15px;
+}
+.jobdetailsboxwithlist h3{ color: #222222;
+    font-family: "Poppins", Sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 26px;
+    margin: 0 0 5px;
+}
+
+.e-lazyloaded .elementor-widget-container p {
+    margin: 0;
+}
+.jobdetailsboxwithlist ul {
+    list-style: disc;
+    padding: 0 0 0 15px;
+    list-style-position: inside;
+}
+.jobdetailsboxwithlist ul li
+{
+    color: #242424;
+    font-family: "Poppins", Sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 26px;
+    word-spacing: 0.03em;
+}
