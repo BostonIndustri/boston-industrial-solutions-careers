@@ -594,12 +594,11 @@ if ( ! function_exists( 'boston_careers_sync_jobs' ) ) {
 					</tbody>
 				</table>
 			<?php } else { ?>
-				<p><?php esc_html_e('No new jobs to sync.', 'boston-careers'); ?></p>
+				<p><?php esc_html_e( 'No new jobs to sync.', 'boston-careers' ); ?></p>
 			<?php } ?>
 		</div>
 		<?php
 	}
-	
 }
 
 /**
@@ -678,6 +677,29 @@ if ( ! function_exists( 'boston_careers_posts_args_callback' ) ) {
 }
 
 add_filter( 'boston_careers_posts_args', 'boston_careers_posts_args_callback' );
+
+/**
+ * If the function, `boston_careers_template_include_callback` doesn't include.
+ */
+if ( ! function_exists( 'boston_careers_template_include_callback' ) ) {
+	/**
+	 * Include custom post and page templates.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $templates This variable holds the all the templates array.
+	 */
+	function boston_careers_template_include_callback( $templates ) {
+		// Check if it's the job details page.
+		if ( is_singular( 'job' ) ) {
+			$templates = get_stylesheet_directory() . '/templates/custom-post-type/job/single.php';
+		}
+
+		return $templates;
+	}
+}
+
+add_filter( 'template_include', 'boston_careers_template_include_callback' );
 
 /**
  * If the function, `boston_careers_zoho_crm_auth_token` doesn't exist.
