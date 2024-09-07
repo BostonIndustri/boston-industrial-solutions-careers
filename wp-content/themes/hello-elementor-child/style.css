@@ -11,10 +11,6 @@ Updated: 2024-07-26 16:23:12
 Text Domain: boston-careers
 */
 
-
-
-
-/* hd */
 .site-header .header-inner,main .page-header{display:none;}
 .careertable .tablepress>:where(thead,tfoot)>*>th{background:transparent;border-top:none;border-bottom:solid 2px #000;font-size:18px;font-weight:600;font-family:"Poppins",Sans-serif;line-height:29px;border-top:none!important;}
 .careertable table tbody>tr:nth-child(odd)>td,table tbody>tr:nth-child(odd)>th,.careertable table tbody>tr:nth-child(even)>td,table tbody>tr:nth-child(even)>th{background:transparent;padding:10px 10px;font-size:16px;font-weight:500;font-family:"Poppins",Sans-serif;line-height:29px;}
@@ -38,4 +34,3 @@ a{color:#007BFF;}
 	.careertable table td::before{content:attr(data-label);float:left;font-weight:bold;text-transform:uppercase;}
 	.careertable table td:last-child{border-bottom:0;}
 }
-/* hd */

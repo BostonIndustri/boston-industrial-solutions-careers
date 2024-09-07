@@ -51,6 +51,24 @@ if ( ! function_exists( 'boston_careers_wp_enqueue_scripts_callback' ) ) {
 	 * @since 1.0.0
 	 */
 	function boston_careers_wp_enqueue_scripts_callback() {
+		// Enqueue the custom style file.
+		wp_enqueue_style(
+			'boston-careers-custom-css',
+			trailingslashit( get_stylesheet_directory_uri() ) . '/assets/css/public.css',
+			array(),
+			filemtime( get_stylesheet_directory() . '/assets/css/public.css' ),
+			'all'
+		);
+
+		// Enqueue the custom style file.
+		wp_enqueue_style(
+			'boston-careers-custom-media-css',
+			trailingslashit( get_stylesheet_directory_uri() ) . '/assets/css/public-media.css',
+			array(),
+			filemtime( get_stylesheet_directory() . '/assets/css/public-media.css' ),
+			'all'
+		);
+
 		// Enqueue the main style file.
 		wp_enqueue_style(
 			'hello-elem-child-style',
