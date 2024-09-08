@@ -9,6 +9,7 @@ section.job-detail-main {
 .container-boston {
     max-width: 1140px;
     margin: 0 auto;
+    padding:0 15px;
 }
 
 
@@ -342,13 +343,14 @@ section.jobdetailapplyforposition form.jobdetailform .jobformcontrols .namegroup
 }
 
 .upload-btn-wrapper .btn {
-    border: 2px solid gray;
-    color: gray;
-    background-color: white;
-    padding: 8px 20px;
-    border-radius: 8px;
-    font-size: 20px;
-    font-weight: bold;
+    border: 1px solid #007BFF;
+    color: #fff;
+    background-color: #007BFF;
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-size: 16px;
+    font-weight: 500;
+    font-family: "Poppins", sans-serif;
 }
 
 .upload-btn-wrapper input[type=file] {
@@ -357,4 +359,7 @@ section.jobdetailapplyforposition form.jobdetailform .jobformcontrols .namegroup
     left: 0;
     top: 0;
     opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
 }
