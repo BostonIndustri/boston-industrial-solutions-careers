@@ -192,3 +192,56 @@ section.job-secondblock .jobdetailsbox .jobdetailsbox-right .jobpositnstocky {
     word-spacing: 0;
     margin: 0 0 5px;
 }
+
+section.job-secondblock .jobdetailsbox {
+    border-bottom: solid 2px #DDDDDD;
+    padding-bottom: 50px;
+}
+
+section.jobdetailapplyforposition {
+    padding: 0;
+}
+
+section.jobdetailapplyforposition h5 {
+    color: #222222;
+    font-family: "Poppins", Sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 38px;
+    margin: 0px 0 25px;
+    padding-bottom: 10px;
+    display: flex;
+    align-items: flex-end;
+    align-content: flex-end;
+    justify-content: center;
+}
+
+section.jobdetailapplyforposition form.jobdetailform .jobformcontrols {
+    display: flex;
+    justify-content: space-between;
+}
+
+section.jobdetailapplyforposition form.jobdetailform .jobformcontrols .namegroup {
+    width: 49%;
+}
+
+
+section.jobdetailapplyforposition form.jobdetailform .jobformcontrols .namegroup label {
+    color: #242424;
+    font-family: "Poppins", Sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 26px;
+    word-spacing: 0.03em;
+}
+
+section.jobdetailapplyforposition form.jobdetailform .jobformcontrols .namegroup input
+{
+    color: #242424;
+    font-family: "Poppins", Sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    word-spacing: 0;
+    margin: 0 0 5px;
+}
