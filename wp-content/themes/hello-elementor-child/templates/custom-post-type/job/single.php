@@ -164,7 +164,10 @@
                             <p>Max. file size: 29 MB</p>
                         </li>
                         <li>
-                            <input type="file" id="coverletter" name="coverletter">
+                            <div class="upload-btn-wrapper">
+                                <button class="btn">Upload a file</button>
+                                <input type="file" id="coverletter" name="coverletter">
+                            </div>    
                         </li>
                     </ul>
 
@@ -174,7 +177,10 @@
                             <p>Max. file size: 29 MB</p>
                         </li>
                         <li>
-                            <input type="file" id="coverletter" name="coverletter">
+                            <div class="upload-btn-wrapper">
+                                <button class="btn">Upload a file</button>
+                                <input type="file" id="coverletter" name="coverletter">
+                            </div>    
                         </li>
                     </ul>
 

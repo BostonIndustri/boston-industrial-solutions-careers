@@ -1,7 +1,11 @@
-.sample-line {color: blue;}
+.sample-line {
+    color: blue;
+}
+
 section.job-detail-main {
     padding: 40px 0 20px;
 }
+
 .container-boston {
     max-width: 1140px;
     margin: 0 auto;
@@ -36,6 +40,7 @@ section.job-detail-main .container-boston .boosten-bradcom ul li {
     font-weight: 400;
     line-height: 26px;
 }
+
 section.job-detail-main .container-boston .boosten-bradcom ul li:after {
     content: "\203A";
     position: absolute;
@@ -52,7 +57,9 @@ section.job-detail-main .container-boston .boosten-bradcom ul li:last-child {
     padding-right: 0px;
 }
 
-section.job-detail-main .container-boston .boosten-bradcom ul li:last-child:after{display: none;}
+section.job-detail-main .container-boston .boosten-bradcom ul li:last-child:after {
+    display: none;
+}
 
 
 section.job-secondblock {
@@ -67,6 +74,7 @@ section.job-secondblock .jobdetailsbox {
 section.job-secondblock .jobdetailsbox .jobdetailsbox-left {
     padding-right: 80px;
 }
+
 section.job-secondblock .jobdetailsbox .jobdetailsbox-right {
     width: 300px;
     flex: 0 0 300px;
@@ -106,10 +114,13 @@ section.job-secondblock .jobdetailsbox .jobdetailsbox-left p {
     line-height: 26px;
     word-spacing: 0.03em;
 }
+
 .jobdetailsboxwithlist {
     margin: 0 0 15px;
 }
-.jobdetailsboxwithlist h3{ color: #222222;
+
+.jobdetailsboxwithlist h3 {
+    color: #222222;
     font-family: "Poppins", Sans-serif;
     font-size: 14px;
     font-weight: 700;
@@ -120,13 +131,14 @@ section.job-secondblock .jobdetailsbox .jobdetailsbox-left p {
 .e-lazyloaded .elementor-widget-container p {
     margin: 0;
 }
+
 .jobdetailsboxwithlist ul {
     list-style: disc;
     padding: 0 0 0 15px;
     list-style-position: inside;
 }
-.jobdetailsboxwithlist ul li
-{
+
+.jobdetailsboxwithlist ul li {
     color: #242424;
     font-family: "Poppins", Sans-serif;
     font-size: 14px;
@@ -230,18 +242,119 @@ section.jobdetailapplyforposition form.jobdetailform .jobformcontrols .namegroup
     color: #242424;
     font-family: "Poppins", Sans-serif;
     font-size: 14px;
-    font-weight: 400;
+    font-weight: 600;
     line-height: 26px;
     word-spacing: 0.03em;
 }
 
-section.jobdetailapplyforposition form.jobdetailform .jobformcontrols .namegroup input
-{
+section.jobdetailapplyforposition form.jobdetailform .jobformcontrols .namegroup input {
     color: #242424;
     font-family: "Poppins", Sans-serif;
     font-size: 14px;
     font-weight: 400;
     line-height: 20px;
     word-spacing: 0;
-    margin: 0 0 5px;
+    margin: 0 0 10px;
+    border: solid 1px #000;
+    border-radius: 0px;
+}
+
+
+
+.termsbox {
+    display: block;
+    margin-bottom: 15px;
+}
+
+.termsbox input {
+    padding: 0;
+    height: initial;
+    width: initial;
+    margin-bottom: 0;
+    display: none;
+    cursor: pointer;
+}
+
+.termsbox label {
+    position: relative;
+    cursor: pointer;
+}
+
+.termsbox label:before {
+    content: '';
+    -webkit-appearance: none;
+    background-color: transparent;
+    border: 1px solid #000;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
+    padding: 7px;
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    cursor: pointer;
+    margin-right: 5px;
+    margin-top: -4px;
+}
+
+.termsbox input:checked+label:after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 2px;
+    left: 6px;
+    width: 5px;
+    height: 10px;
+    border: solid #007BFF;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+
+section.jobdetailapplyforposition form.jobdetailform .jobformcontrols .namegroup ul {
+    margin: 5px 0 15px;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+}
+
+section.jobdetailapplyforposition form.jobdetailform .jobformcontrols .namegroup ul label {
+    font-size: 12px;
+    margin: 0;
+}
+
+section.jobdetailapplyforposition form.jobdetailform .jobformcontrols .namegroup ul li p {
+    color: #242424;
+    font-family: "Poppins", Sans-serif;
+    font-size: 12px;
+    margin: 0;
+}
+
+
+
+
+
+
+
+.upload-btn-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.upload-btn-wrapper .btn {
+    border: 2px solid gray;
+    color: gray;
+    background-color: white;
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.upload-btn-wrapper input[type=file] {
+    font-size: 100px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
 }
