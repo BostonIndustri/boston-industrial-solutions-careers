@@ -165,7 +165,7 @@
                         </li>
                         <li>
                             <div class="upload-btn-wrapper">
-                                <button class="btn">Upload a file</button>
+                                <button class="btn">CHOOSE FILE</button>
                                 <input type="file" id="coverletter" name="coverletter">
                             </div>    
                         </li>
@@ -178,7 +178,7 @@
                         </li>
                         <li>
                             <div class="upload-btn-wrapper">
-                                <button class="btn">Upload a file</button>
+                                <button class="btn">CHOOSE FILE</button>
                                 <input type="file" id="coverletter" name="coverletter">
                             </div>    
                         </li>

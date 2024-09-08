@@ -212,7 +212,7 @@ section.job-secondblock .jobdetailsbox {
 }
 
 section.jobdetailapplyforposition {
-    padding: 0;
+    padding: 0 0 30px;
 }
 
 section.jobdetailapplyforposition h5 {
@@ -311,7 +311,7 @@ section.jobdetailapplyforposition form.jobdetailform .jobformcontrols .namegroup
 
 
 section.jobdetailapplyforposition form.jobdetailform .jobformcontrols .namegroup ul {
-    margin: 5px 0 15px;
+    margin: 10px 0 15px;
     padding: 0;
     list-style: none;
     display: flex;
@@ -331,6 +331,13 @@ section.jobdetailapplyforposition form.jobdetailform .jobformcontrols .namegroup
 }
 
 
+section.jobdetailapplyforposition form.jobdetailform .jobformcontrols .namegroup textarea {
+    width: 100%;
+    height: 150px;
+    resize: none;
+    margin: 0 0 15px;
+}
+
 
 
 
@@ -348,9 +355,13 @@ section.jobdetailapplyforposition form.jobdetailform .jobformcontrols .namegroup
     background-color: #007BFF;
     padding: 5px 10px;
     border-radius: 3px;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
     font-family: "Poppins", sans-serif;
+    height: 36px;
+    z-index: 1;
+    position: relative;
+    width: 110px;
 }
 
 .upload-btn-wrapper input[type=file] {
@@ -362,4 +373,26 @@ section.jobdetailapplyforposition form.jobdetailform .jobformcontrols .namegroup
     width: 100%;
     height: 100%;
     cursor: pointer;
+}
+
+
+section.jobdetailapplyforposition form.jobdetailform .jobformcontrols .namegroup input[type="submit"] {
+    border: 1px solid #007BFF;
+    color: #fff;
+    background-color: #007BFF;
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: "Poppins", sans-serif;
+    height: 36px;
+    z-index: 1;
+    position: relative;
+    margin-left: auto;
+    display: flex;
+    width: 110px;
+}
+
+section.jobdetailapplyforposition form.jobdetailform .jobformcontrols .namegroup ul:nth-child(2) {
+    margin-top: 0;
 }
