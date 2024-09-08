@@ -114,4 +114,80 @@
         </div>
     </div>
 </section>
+
+<section class="jobdetailapplyforposition">
+    <div class="container-boston">
+        <h5>APPLY FOR THIS POSITION</h5>  
+        <form class="jobdetailform" action="" method="">
+            <div>
+            <div class="jobformcontrols">
+                <div class="namegroup">
+                    <label>FIRST NAME *</label>
+                    <input type="text" id="firstname" name="fname" />
+                </div>
+
+                <div class="namegroup">
+                    <label>LAST NAME *</label>
+                    <input type="text" id="lastname" name="lname" />
+                </div>
+            </div>
+
+            <div class="jobformcontrols">
+                <div class="namegroup">
+                    <label>EMAIL ADDRESS *</label>
+                    <input type="email" id="email" name="email" />
+                </div>
+
+                <div class="namegroup">
+                    <label>HOW DID YOU HEAR ABOUT US? *</label>
+                    <select>
+                        <option value="">google</option>
+                        <option value="">website</option>
+                        <option value="">whatsapp</option>
+                        <option value="">instagram</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="jobformcontrols">
+                <div class="namegroup">
+                    <label>COMMENTS</label>
+                    <textarea id="comments" name="comments">
+                        
+                    </textarea>
+                </div>
+
+                <div class="namegroup">
+                    <ul>
+                        <li>
+                            <label>UPLOAD COVER LETTER</label>
+                            <p>Max. file size: 29 MB</p>
+                        </li>
+                        <li>
+                            <input type="file" id="coverletter" name="coverletter">
+                        </li>
+                    </ul>
+
+                    <ul>
+                        <li>
+                            <label>UPLOAD RESUME</label>
+                            <p>Max. file size: 29 MB</p>
+                        </li>
+                        <li>
+                            <input type="file" id="coverletter" name="coverletter">
+                        </li>
+                    </ul>
+
+                    <input type="submit" value="SUBMIT">
+                </div>
+            </div>
+            </div>
+            <div class="termsbox">
+                <input type="checkbox" id="html">
+                <label for="html">By checking this box you agree to <a href="javascript:void(0);">Boston Industrial Solutions</a> Privacy Policy.</label>
+            </div>
+        </form>
+    </div>
+</section>
+
 <?php get_footer();
