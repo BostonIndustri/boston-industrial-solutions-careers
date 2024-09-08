@@ -37,4 +37,9 @@
         display: flex;
         flex-wrap: wrap;
     }
+    .termsbox label {
+        position: relative;
+        cursor: pointer;
+        line-height: 24px;
+    }
 }

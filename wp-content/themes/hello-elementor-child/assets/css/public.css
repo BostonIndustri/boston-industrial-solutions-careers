@@ -408,3 +408,7 @@ section.jobdetailapplyforposition form.jobdetailform .jobformcontrols .namegroup
     padding: 7px;
     height: 38px;
 }
+
+section.jobdetailapplyforposition form.jobdetailform .jobformcontrols .namegroup select {
+    margin-bottom: 10px;
+}
