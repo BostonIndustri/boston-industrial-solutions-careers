@@ -33,4 +33,8 @@
      
         flex-wrap: wrap;
     }
+    section.job-secondblock .jobdetailsbox {
+        display: flex;
+        flex-wrap: wrap;
+    }
 }
