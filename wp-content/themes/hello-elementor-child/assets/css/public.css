@@ -336,6 +336,8 @@ section.jobdetailapplyforposition form.jobdetailform .jobformcontrols .namegroup
     height: 150px;
     resize: none;
     margin: 0px;
+    border: solid 1px #000;
+    border-radius: 0px;
 }
 
 .upload-btn-wrapper {
@@ -397,4 +399,12 @@ section.jobdetailapplyforposition form.jobdetailform .jobformcontrols .namegroup
 
 section.jobdetailapplyforposition form.jobdetailform .jobformcontrols .namegroup ul:nth-child(2) {
     margin-top: 0;
+}
+
+
+section.jobdetailapplyforposition form.jobdetailform .jobformcontrols .namegroup select {
+    border: solid 1px #000;
+    border-radius: 0px;
+    padding: 7px;
+    height: 38px;
 }

@@ -1,0 +1,36 @@
+
+@media only screen and (max-width:1200px) 
+{
+
+
+}
+
+
+@media (min-width: 991px) and (max-width: 1199px)
+{	
+
+}
+
+@media (min-width: 768px) and (max-width: 991px) 
+{
+
+}    
+
+@media (max-width: 767px) 
+{
+    section.job-secondblock .jobdetailsbox .jobdetailsbox-left {
+        padding-right: 0;
+    }
+    section.job-secondblock .jobdetailsbox .jobdetailsbox-right {
+        width: 100%;
+        flex: 0 0 100%;
+    }
+    section.jobdetailapplyforposition form.jobdetailform .jobformcontrols .namegroup {
+        width: 100%;
+    }
+    section.jobdetailapplyforposition form.jobdetailform .jobformcontrols 
+    {
+     
+        flex-wrap: wrap;
+    }
+}
