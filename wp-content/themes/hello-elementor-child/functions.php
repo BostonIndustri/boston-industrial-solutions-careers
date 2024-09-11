@@ -602,7 +602,11 @@ if ( ! function_exists( 'boston_careers_sync_jobs' ) ) {
 						</tr>
 					</thead>
 					<tbody>
-						<?php foreach ($new_jobs as $job) { ?>
+						<?php foreach ($new_jobs as $job) { 
+							echo "<pre>";
+							print_r($job['Client_Name']['name']);
+							echo "</pre>";
+							?>
 							<tr>
 								<td><?php echo esc_html($job['Job_Opening_Name']); ?></td>
 								<td><?php echo esc_html($job['State']) . ', ' . esc_html($job['Country']); ?></td>
