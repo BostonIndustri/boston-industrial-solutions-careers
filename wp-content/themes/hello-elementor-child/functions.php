@@ -657,7 +657,7 @@ if ( ! function_exists( 'boston_careers_sync_single_job_callback' ) ) {
 		// Get the job title from the request.
 		$job_title = filter_input( INPUT_POST, 'job_title', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 		$job_id = filter_input( INPUT_POST, 'job_id', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
-		$job_details_json = filter_input(INPUT_POST, 'job_details', FILTER_SANITIZE_STRING);
+		$job_details_json = filter_input(INPUT_POST, 'jobdetails', FILTER_SANITIZE_STRING);
 
 		// Decode JSON data to retrieve job details
 		$job_details = json_decode($job_details_json, true);
