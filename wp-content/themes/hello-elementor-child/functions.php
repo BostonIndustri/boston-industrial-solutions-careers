@@ -663,17 +663,17 @@ if ( ! function_exists( 'boston_careers_sync_single_job_callback' ) ) {
 		// Debug raw input data
         echo "<pre>Raw job details JSON string:</pre>";
         echo "<pre>";
-        print_r( $job_details_json );
+        var_dump( $job_details_json );
         echo "</pre>";
 
-        // Decode JSON data to retrieve job details
-        $job_details = json_decode( $job_details_json );
+        // // Decode JSON data to retrieve job details
+        // $job_details = json_decode( $job_details_json );
 
-        // Debug decoded job details
-        echo "<pre>Decoded job details array:</pre>";
-        echo "<pre>";
-        print_r( $job_details );
-        echo "</pre>";
+        // // Debug decoded job details
+        // echo "<pre>Decoded job details array:</pre>";
+        // echo "<pre>";
+        // print_r( $job_details );
+        // echo "</pre>";
         die('Debugging stop');
 		// Create a new post in the 'jobs' CPT.
 		$post_id = wp_insert_post(
