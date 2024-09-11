@@ -659,18 +659,18 @@ if ( ! function_exists( 'boston_careers_sync_single_job_callback' ) ) {
 		$job_id = filter_input( INPUT_POST, 'job_id', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 		$job_details_json = isset( $_POST['jobdetails'] ) ? wp_unslash( $_POST['jobdetails'] ) : ''; // Use wp_unslash to remove slashes from the input
 
-		// Add job details to meta input array
-        foreach ( $job_details_json as $key => $value ) {
-			echo $key;
-			die('lkoooo');
-            if ( is_array( $value ) ) {
-                // If the value is an array (e.g., nested data), serialize it to store it as a string
-                $meta_input[ $key ] = maybe_serialize( $value );
-            } else {
-                // Otherwise, sanitize and add the value directly
-                $meta_input[ $key ] = sanitize_text_field( $value );
-            }
-        }
+		// // Add job details to meta input array
+        // foreach ( $job_details_json as $key => $value ) {
+		// 	echo $key;
+		// 	die('lkoooo');
+        //     if ( is_array( $value ) ) {
+        //         // If the value is an array (e.g., nested data), serialize it to store it as a string
+        //         $meta_input[ $key ] = maybe_serialize( $value );
+        //     } else {
+        //         // Otherwise, sanitize and add the value directly
+        //         $meta_input[ $key ] = sanitize_text_field( $value );
+        //     }
+        // }
 
 
 		// Create a new post in the 'jobs' CPT.
