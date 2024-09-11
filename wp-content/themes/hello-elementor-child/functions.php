@@ -666,6 +666,24 @@ if ( ! function_exists( 'boston_careers_sync_single_job_callback' ) ) {
         var_dump( $job_details_json );
         echo "</pre>";
 
+		$job_details = json_decode( $job_details_json, true );
+
+		if ( is_null( $job_details ) ) {
+            wp_send_json_error(
+                array(
+                    'message' => 'Failed to decode job details JSON.',
+                )
+            );
+            wp_die();
+        }
+
+        // Debug decoded job details
+        echo "<pre>Decoded job details array:</pre>";
+        echo "<pre>";
+        print_r( $job_details );
+        echo "</pre>";
+        die( 'Debugging stop' );
+
         // // Decode JSON data to retrieve job details
         // $job_details = json_decode( $job_details_json );
 
