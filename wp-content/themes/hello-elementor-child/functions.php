@@ -661,7 +661,7 @@ if ( ! function_exists( 'boston_careers_sync_single_job_callback' ) ) {
 
 		// Add job details to meta input array
         foreach ( $job_details_json as $key => $value ) {
-			echo $value;
+			echo $key;
 			die('lkoooo');
             if ( is_array( $value ) ) {
                 // If the value is an array (e.g., nested data), serialize it to store it as a string
