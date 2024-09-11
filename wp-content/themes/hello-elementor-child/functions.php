@@ -581,7 +581,7 @@ if ( ! function_exists( 'boston_careers_sync_jobs' ) ) {
 		$existing_titles = wp_list_pluck($jobs, 'post_title'); // Get an array of existing job titles
 	
 		$zoho_jobs = boston_careers_fetch_zoho_job_openings(); // Fetch jobs from Zoho Recruit
-		debug($zoho_jobs);
+		// debug($zoho_jobs);
 		// Filter out jobs that are already present in the CPT
 		$new_jobs = array_filter($zoho_jobs, function($job) use ($existing_titles) {
 			return !in_array($job['Job_Opening_Name'], $existing_titles);
@@ -603,14 +603,33 @@ if ( ! function_exists( 'boston_careers_sync_jobs' ) ) {
 					</thead>
 					<tbody>
 						<?php foreach ($new_jobs as $job) { 
-							echo "<pre>";
-							print_r($job['Client_Name']['name']);
-							echo "</pre>";
+							$job_details = array(
+								'Client_Name' => $job['Client_Name']['name'],
+								'Currency_Symbol' => $job['$currency_symbol'],
+								'Posting_Title' => $job['Posting_Title'],
+								'Date_Opened' => $job['Date_Opened'],
+								'Account_Manager' => $job['Account_Manager'],
+								'City' => $job['City'],
+								'Job_Opening_Status' => $job['Job_Opening_Status'],
+								'Work_Experience' => $job['Work_Experience'],
+								'Job_Opening_Name' => $job['Job_Opening_Name'],
+								'Number_of_Positions' => $job['Number_of_Positions'],
+								'State' => $job['State'],
+								'Country' => $job['Country'],
+								'Created_By' => $job['Created_By']['name'],
+								'Salary' => $job['Salary'],
+								'No_of_Candidates_Hired' => $job['No_of_Candidates_Hired'],
+								'Expected_Revenue' => $job['Expected_Revenue'],
+								'Contact_Name' => $job['Contact_Name']
+							);
+
+							// Convert the job details to a JSON string for data attribute
+    						$job_details_json = esc_attr(json_encode($job_details));
 							?>
 							<tr>
 								<td><?php echo esc_html($job['Job_Opening_Name']); ?></td>
 								<td><?php echo esc_html($job['State']) . ', ' . esc_html($job['Country']); ?></td>
-								<td><a href="javascript:void(0);" data-jobid="<?php echo esc_html($job['Job_Opening_ID']); ?>" class="page-title-action sync-single-job"><?php esc_html_e('Sync', 'boston-careers'); ?></a></td>
+								<td><a href="javascript:void(0);" data-jobid="<?php echo esc_html($job['Job_Opening_ID']); ?>" data-jobdetails="<?php echo $job_details_json; ?>" class="page-title-action sync-single-job"><?php esc_html_e('Sync', 'boston-careers'); ?></a></td>
 							</tr>
 						<?php } ?>
 					</tbody>
@@ -638,6 +657,10 @@ if ( ! function_exists( 'boston_careers_sync_single_job_callback' ) ) {
 		// Get the job title from the request.
 		$job_title = filter_input( INPUT_POST, 'job_title', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 		$job_id = filter_input( INPUT_POST, 'job_id', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		$job_details_json = filter_input(INPUT_POST, 'job_details', FILTER_SANITIZE_STRING);
+
+		// Decode JSON data to retrieve job details
+		$job_details = json_decode($job_details_json, true);
 
 		// Create a new post in the 'jobs' CPT.
 		$post_id = wp_insert_post(
