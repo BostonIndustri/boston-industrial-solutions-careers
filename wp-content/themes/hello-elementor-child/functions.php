@@ -659,40 +659,20 @@ if ( ! function_exists( 'boston_careers_sync_single_job_callback' ) ) {
 		$job_id = filter_input( INPUT_POST, 'job_id', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 		$job_details_json = isset( $_POST['jobdetails'] ) ? wp_unslash( $_POST['jobdetails'] ) : ''; // Use wp_unslash to remove slashes from the input
 
-
-		// Debug raw input data
-        echo "<pre>Raw job details JSON string:</pre>";
-        echo "<pre>";
-        var_dump( $job_details_json );
-        echo "</pre>";
-
-		$job_details = json_decode( $job_details_json, true );
-
-		if ( is_null( $job_details ) ) {
-            wp_send_json_error(
-                array(
-                    'message' => 'Failed to decode job details JSON.',
-                )
-            );
-            wp_die();
+		// Add job details to meta input array
+        foreach ( $job_details_json as $key => $value ) {
+			echo $value;
+			die('lkoooo');
+            if ( is_array( $value ) ) {
+                // If the value is an array (e.g., nested data), serialize it to store it as a string
+                $meta_input[ $key ] = maybe_serialize( $value );
+            } else {
+                // Otherwise, sanitize and add the value directly
+                $meta_input[ $key ] = sanitize_text_field( $value );
+            }
         }
 
-        // Debug decoded job details
-        echo "<pre>Decoded job details array:</pre>";
-        echo "<pre>";
-        print_r( $job_details );
-        echo "</pre>";
-        die( 'Debugging stop' );
 
-        // // Decode JSON data to retrieve job details
-        // $job_details = json_decode( $job_details_json );
-
-        // // Debug decoded job details
-        // echo "<pre>Decoded job details array:</pre>";
-        // echo "<pre>";
-        // print_r( $job_details );
-        // echo "</pre>";
-        die('Debugging stop');
 		// Create a new post in the 'jobs' CPT.
 		$post_id = wp_insert_post(
 			array(
