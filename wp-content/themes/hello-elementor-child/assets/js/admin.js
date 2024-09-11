@@ -15,6 +15,7 @@ jQuery( document ).ready( function( $ ) {
 			var jobTitle = $( this ).closest( 'tr' ).find( 'td:first' ).text().trim();
 			var jobId = $( this ).data( 'jobid' );
 			var jobDetails = $( this ).data( 'jobdetails' ); // Fetch job details as JSON from the data attribute
+			JSON.stringify(jobDetails);
 
 			$.ajax( {
 				url: ajax_url,
