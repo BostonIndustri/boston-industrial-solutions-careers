@@ -667,7 +667,7 @@ if ( ! function_exists( 'boston_careers_sync_single_job_callback' ) ) {
         echo "</pre>";
 
         // Decode JSON data to retrieve job details
-        $job_details = json_decode( stripslashes( $job_details_json ), true );
+        $job_details = json_decode( $job_details_json );
 
         // Debug decoded job details
         echo "<pre>Decoded job details array:</pre>";
