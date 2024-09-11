@@ -661,7 +661,10 @@ if ( ! function_exists( 'boston_careers_sync_single_job_callback' ) ) {
 
 		// Decode JSON data to retrieve job details
 		$job_details = json_decode($job_details_json, true);
-
+		echo "<pre>";
+		print_r($job_details);
+		echo "</pre>";
+		die('lkoo');
 		// Create a new post in the 'jobs' CPT.
 		$post_id = wp_insert_post(
 			array(
