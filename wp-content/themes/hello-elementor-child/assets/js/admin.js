@@ -14,7 +14,8 @@ jQuery( document ).ready( function( $ ) {
 			// Get job title from the table cell.
 			var jobTitle = $( this ).closest( 'tr' ).find( 'td:first' ).text().trim();
 			var jobId = $( this ).data( 'jobid' );
-			var jobdetails = $( this ).data( 'jobdetails' );
+			var jobDetails = $( this ).data( 'jobdetails' ); // Fetch job details as JSON from the data attribute
+
 			$.ajax( {
 				url: ajax_url,
 				type: 'POST',
@@ -22,8 +23,8 @@ jQuery( document ).ready( function( $ ) {
 					action: 'sync_single_job',
 					job_title: jobTitle,
 					job_id: jobId,
-					jobdetails: jobdetails,
-					ajax_nonce: ajax_nonce,
+					jobdetails: jobDetails,
+					ajax_nonce: ajax_nonce
 				},
 				success: function( response ) {
 					if ( response.success ) {
