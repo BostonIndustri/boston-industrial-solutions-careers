@@ -657,16 +657,23 @@ if ( ! function_exists( 'boston_careers_sync_single_job_callback' ) ) {
 		// Get the job title from the request.
 		$job_title = filter_input( INPUT_POST, 'job_title', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 		$job_id = filter_input( INPUT_POST, 'job_id', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
-		echo $job_details_json = $_POST['jobdetails'];
+        $job_details_json = filter_input( INPUT_POST, 'jobdetails', FILTER_UNSAFE_RAW );
 
-		// Decode JSON data to retrieve job details
+		// Debug raw input data
+        echo "<pre>Raw job details JSON string:</pre>";
+        echo "<pre>";
+        print_r( $job_details_json );
+        echo "</pre>";
+
+        // Decode JSON data to retrieve job details
         $job_details = json_decode( stripslashes( $job_details_json ), true );
 
-        // Output job details for debugging
+        // Debug decoded job details
+        echo "<pre>Decoded job details array:</pre>";
         echo "<pre>";
         print_r( $job_details );
         echo "</pre>";
-        die( 'lkoo' ); // This will stop execution for debugging purposes
+        die('Debugging stop');
 		// Create a new post in the 'jobs' CPT.
 		$post_id = wp_insert_post(
 			array(
