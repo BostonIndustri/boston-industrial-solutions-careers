@@ -657,7 +657,8 @@ if ( ! function_exists( 'boston_careers_sync_single_job_callback' ) ) {
 		// Get the job title from the request.
 		$job_title = filter_input( INPUT_POST, 'job_title', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 		$job_id = filter_input( INPUT_POST, 'job_id', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
-        $job_details_json = filter_input( INPUT_POST, 'jobdetails', FILTER_UNSAFE_RAW );
+		$job_details_json = isset( $_POST['jobdetails'] ) ? wp_unslash( $_POST['jobdetails'] ) : ''; // Use wp_unslash to remove slashes from the input
+
 
 		// Debug raw input data
         echo "<pre>Raw job details JSON string:</pre>";
