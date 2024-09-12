@@ -821,8 +821,7 @@ if ( ! function_exists( 'boston_careers_sync_all_jobs' ) ) {
 
         // Get jobs data from the AJAX request
         $jobs = isset($_POST['jobs']) ? $_POST['jobs'] : [];
-		debug($jobs);
-		die('lkoo');
+        
         if (empty($jobs)) {
             wp_send_json_error('No jobs provided.');
             return;
@@ -831,8 +830,7 @@ if ( ! function_exists( 'boston_careers_sync_all_jobs' ) ) {
         foreach ($jobs as $job) {
             $job_title = sanitize_text_field($job['title']);
             $job_id = sanitize_text_field($job['id']);
-            $job_details_json = isset($job['details']) ? wp_unslash($job['details']) : ''; // Use wp_unslash to remove slashes from the input
-            $job_details = json_decode($job_details_json, true); // Decode JSON to array
+            $job_details = isset($job['details']) ? $job['details'] : []; // The job details are already an array
 
             // Prepare meta input array
             $meta_input = array(
@@ -842,13 +840,16 @@ if ( ! function_exists( 'boston_careers_sync_all_jobs' ) ) {
             );
 
             // Add job details to meta input array
-            foreach ($job_details_json as $key => $value) {
+            foreach ($job_details as $key => $value) {
                 if (is_array($value)) {
                     if ($key === 'Account_Manager' && isset($value['name'])) {
                         // Store only the name for the Account Manager
                         $meta_input[strtolower($key)] = sanitize_text_field($value['name']);
+                    } elseif ($key === 'Contact_Name' && isset($value['name'])) {
+                        // Store only the name for the Contact Name
+                        $meta_input[strtolower($key)] = sanitize_text_field($value['name']);
                     } else {
-                        // If the value is an array (e.g., nested data), serialize it to store it as a string
+                        // If the value is an array and not specifically handled, serialize it to store as a string
                         $meta_input[strtolower($key)] = maybe_serialize($value);
                     }
                 } else {
@@ -873,3 +874,4 @@ if ( ! function_exists( 'boston_careers_sync_all_jobs' ) ) {
 }
 
 add_action('wp_ajax_sync_all_jobs', 'boston_careers_sync_all_jobs');
+
