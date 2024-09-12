@@ -677,10 +677,15 @@ if ( ! function_exists( 'boston_careers_sync_single_job_callback' ) ) {
 		);
 
 		// Add job details to meta input array
-		foreach ($job_details_json as $key => $value) {
+		foreach ($job_details as $key => $value) {
 			if (is_array($value)) {
-				// If the value is an array (e.g., nested data), serialize it to store it as a string
-				$meta_input[strtolower($key)] = maybe_serialize($value);
+				if ($key === 'Account_Manager' && isset($value['name'])) {
+					// Store only the name for the Account Manager
+					$meta_input[strtolower($key)] = sanitize_text_field($value['name']);
+				} else {
+					// If the value is an array (e.g., nested data), serialize it to store it as a string
+					$meta_input[strtolower($key)] = maybe_serialize($value);
+				}
 			} else {
 				// Otherwise, sanitize and add the value directly
 				$meta_input[strtolower($key)] = sanitize_text_field($value);
