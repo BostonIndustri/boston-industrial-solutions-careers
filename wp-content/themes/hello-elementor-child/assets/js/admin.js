@@ -67,12 +67,12 @@ jQuery( document ).ready( function( $ ) {
 			return;
 		}
 	
-		jQuery.ajax({
+		$.ajax({
 			url: ajax_url,
 			type: 'POST',
 			data: {
 				action: 'sync_all_jobs',
-				jobs: jobs,
+				jobs: jobs
 				// nonce: bis_admin_ajax.nonce
 			},
 			success: function(response) {

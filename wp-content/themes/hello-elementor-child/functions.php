@@ -821,7 +821,8 @@ if ( ! function_exists( 'boston_careers_sync_all_jobs' ) ) {
 
         // Get jobs data from the AJAX request
         $jobs = isset($_POST['jobs']) ? $_POST['jobs'] : [];
-
+		debug($jobs);
+		die('lkoo');
         if (empty($jobs)) {
             wp_send_json_error('No jobs provided.');
             return;
