@@ -60,7 +60,7 @@ jQuery( document ).ready( function( $ ) {
 				details: jobDetails
 			});
 		});
-	
+		console.log(jobs);
 		// If no jobs found, alert the user
 		if (jobs.length === 0) {
 			alert('No jobs to sync.');
