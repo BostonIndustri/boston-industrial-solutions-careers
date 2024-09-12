@@ -41,4 +41,44 @@ jQuery( document ).ready( function( $ ) {
 			} );
 		} );
 	}
+
+
+	    // Click event to sync all jobs from listing.
+		jQuery('#sync-all-jobs-form').on('submit', function(e) {
+			e.preventDefault();
+	
+			 // Gather job titles from the table
+			 var jobTitles = [];
+			 jQuery('#jobs-table tbody tr').each(function() {
+				 var jobTitle = jQuery(this).find('td:first').text().trim();
+				 jobTitles.push(jobTitle);
+			 });
+	
+			 // If no job titles found, alert the user
+			 if (jobTitles.length === 0) {
+				 alert('No jobs to sync.');
+				 return;
+			 }
+					 
+			 jQuery.ajax({
+				url: bis_admin_ajax.ajax_url,
+				type: 'POST',
+				data: {
+					action: 'sync_all_jobs',
+					job_titles: jobTitles,
+					// nonce: bis_admin_ajax.nonce
+				},
+				success: function(response) {
+					if (response.success) {
+						jQuery('.notice-success').css('display','block');
+						window.location.href = "https://careers.bostonindustrialsolutions.com/wp-admin/edit.php?post_type=jobs"
+					} else {
+						alert('Failed to sync jobs: ' + response.data);
+					}
+				},
+				error: function(xhr, status, error) {
+					alert('An error occurred: ' + error);
+				}
+			});
+		});
 } );

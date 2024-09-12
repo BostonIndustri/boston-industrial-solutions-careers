@@ -800,3 +800,44 @@ if ( ! function_exists( 'boston_careers_zoho_crm_auth_token' ) ) {
 	// 	}
 	// }
 }
+
+
+/**
+ * If the function, `boston_careers_sync_all_jobs` doesn't exist.
+ */
+if ( ! function_exists( 'boston_careers_sync_all_jobs' ) ) {
+	/**
+	 * Sync all jobs.
+	 *
+	 * @since 1.0.0
+	*/
+	function boston_careers_sync_all_jobs() {
+		// Check for nonce for security if needed
+		// check_ajax_referer('nonce', 'security');
+
+		// Get job titles from the AJAX request
+		$job_titles = isset($_POST['job_titles']) ? array_map('sanitize_text_field', $_POST['job_titles']) : [];
+
+		if (empty($job_titles)) {
+			wp_send_json_error('No job titles provided.');
+			return;
+		}
+
+		foreach ($job_titles as $job_title) {
+		
+			wp_insert_post([
+				'post_title'    => $job_title,
+				'post_type'     => 'jobs',
+				'post_status'   => 'publish',
+				'meta_input'  => array(
+					'source'         => 'zoho-recruit',
+					'sync_date_time' => time()
+				),
+			]);
+		}
+
+		wp_send_json_success('All jobs synced successfully.');
+	}
+}
+
+add_action('wp_ajax_sync_all_jobs', 'boston_careers_sync_all_jobs');
