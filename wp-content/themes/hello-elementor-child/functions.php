@@ -677,7 +677,7 @@ if ( ! function_exists( 'boston_careers_sync_single_job_callback' ) ) {
 		);
 
 		// Add job details to meta input array
-		foreach ($job_details as $key => $value) {
+		foreach ($job_details_json as $key => $value) {
 			if (is_array($value)) {
 				if ($key === 'Account_Manager' && isset($value['name'])) {
 					// Store only the name for the Account Manager
