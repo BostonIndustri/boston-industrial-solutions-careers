@@ -593,7 +593,7 @@ if ( ! function_exists( 'boston_careers_sync_jobs' ) ) {
 			<h1><?php esc_html_e('Sync Jobs', 'boston-careers'); ?></h1>
 			<h3><?php esc_html_e('Sync Jobs From Zoho Recruit', 'boston-careers'); ?></h3>
 			<?php if (!empty($new_jobs)) { ?>
-				<table class="widefat fixed" cellspacing="0">
+				<table class="widefat fixed" cellspacing="0" id="jobs-table">
 					<thead>
 						<tr>
 							<th><?php esc_html_e('Job Title', 'boston-careers'); ?></th>
