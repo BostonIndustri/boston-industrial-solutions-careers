@@ -71,7 +71,7 @@ jQuery( document ).ready( function( $ ) {
 				success: function(response) {
 					if (response.success) {
 						jQuery('.notice-success').css('display','block');
-						window.location.href = "https://careers.bostonindustrialsolutions.com/wp-admin/edit.php?post_type=jobs"
+						window.location.href = "https://careers.bostonindustrialsolutions.com/wp-admin/edit.php?post_type=job"
 					} else {
 						alert('Failed to sync jobs: ' + response.data);
 					}

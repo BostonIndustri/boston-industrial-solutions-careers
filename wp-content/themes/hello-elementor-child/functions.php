@@ -828,7 +828,7 @@ if ( ! function_exists( 'boston_careers_sync_all_jobs' ) ) {
 		
 			wp_insert_post([
 				'post_title'    => $job_title,
-				'post_type'     => 'jobs',
+				'post_type'     => 'job',
 				'post_status'   => 'publish',
 				'meta_input'  => array(
 					'source'         => 'zoho-recruit',
