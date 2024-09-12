@@ -61,7 +61,7 @@ jQuery( document ).ready( function( $ ) {
 			 }
 					 
 			 jQuery.ajax({
-				url: bis_admin_ajax.ajax_url,
+				url: ajax_url,
 				type: 'POST',
 				data: {
 					action: 'sync_all_jobs',
