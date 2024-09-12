@@ -635,12 +635,12 @@ if ( ! function_exists( 'boston_careers_sync_jobs' ) ) {
 					</tbody>
 				</table>
 				<!-- Add Sync All Jobs Button with Checkbox -->
-                <form id="sync-all-jobs-form" method="POST" action="">
+                <form id="sync-all-jobs-form" method="POST" action="" style="margin-top: 10px;">
                     <label>
                         <input type="checkbox" name="sync_existing_jobs" value="0">
                         <?php esc_html_e('Sync Existing Jobs', 'boston-careers'); ?>
                     </label>
-                    <input type="submit" class="button button-primary" value="<?php esc_attr_e('Sync All Jobs', 'boston-careers'); ?>" style="margin-top: 10px;">
+                    <input type="submit" class="button button-primary" value="<?php esc_attr_e('Sync All Jobs', 'boston-careers'); ?>" style="margin-top: 0px;">
                 </form>
 			<?php } else { ?>
 				<p><?php esc_html_e( 'No new jobs to sync.', 'boston-careers' ); ?></p>
