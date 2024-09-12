@@ -109,6 +109,7 @@ if ( ! function_exists( 'boston_careers_wp_admin_enqueue_scripts_callback' ) ) {
 			array(
 				'ajax_url'   => admin_url( 'admin-ajax.php' ),
 				'ajax_nonce' => wp_create_nonce( 'bis_admin_nonce' ),
+				'job_listing_url' => get_site_url()."/wp-admin/edit.php?post_type=job",
 			)
 		);
 

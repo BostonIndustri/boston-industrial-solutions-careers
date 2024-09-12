@@ -4,7 +4,8 @@ jQuery( document ).ready( function( $ ) {
 	// Localizd variables.
 	var ajax_url   = Boston_Careers_Admin_Js_Props.ajax_url;
 	var ajax_nonce = Boston_Careers_Admin_Js_Props.ajax_nonce;
-
+	var job_listing_url = Boston_Careers_Admin_Js_Props.job_listing_url
+	console.log(job_listing_url);
 	// Sync single job.
 	if ( $( '.sync-single-job' ).length ) {
 		$( '.sync-single-job' ).on( 'click', function( e ) {
@@ -60,7 +61,7 @@ jQuery( document ).ready( function( $ ) {
 				details: jobDetails
 			});
 		});
-		console.log(jobs);
+		// console.log(jobs);
 		// If no jobs found, alert the user
 		if (jobs.length === 0) {
 			alert('No jobs to sync.');
@@ -78,7 +79,7 @@ jQuery( document ).ready( function( $ ) {
 			success: function(response) {
 				if (response.success) {
 					jQuery('.notice-success').css('display', 'block');
-					window.location.href = "https://careers.bostonindustrialsolutions.com/wp-admin/edit.php?post_type=job";
+					window.location.href = job_listing_url;
 				} else {
 					alert('Failed to sync jobs: ' + response.data);
 				}
