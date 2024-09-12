@@ -583,10 +583,11 @@ if ( ! function_exists( 'boston_careers_sync_jobs' ) ) {
 		$zoho_jobs = boston_careers_fetch_zoho_job_openings(); // Fetch jobs from Zoho Recruit
 		// debug($zoho_jobs);
 		// Filter out jobs that are already present in the CPT
-		$new_jobs = array_filter($zoho_jobs, function($job) use ($existing_titles) {
-			return !in_array($job['Job_Opening_Name'], $existing_titles);
-		});
-	
+		if($zoho_jobs){
+			$new_jobs = array_filter($zoho_jobs, function($job) use ($existing_titles) {
+				return !in_array($job['Job_Opening_Name'], $existing_titles);
+			});
+		}
 		// Your existing HTML code to display jobs
 		?>
 		<div class="wrap">
