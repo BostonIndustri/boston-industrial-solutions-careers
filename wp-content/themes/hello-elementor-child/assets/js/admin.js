@@ -43,42 +43,50 @@ jQuery( document ).ready( function( $ ) {
 	}
 
 
-	    // Click event to sync all jobs from listing.
-		jQuery('#sync-all-jobs-form').on('submit', function(e) {
-			e.preventDefault();
+	jQuery('#sync-all-jobs-form').on('submit', function(e) {
+		e.preventDefault();
 	
-			 // Gather job titles from the table
-			 var jobTitles = [];
-			 jQuery('#jobs-table tbody tr').each(function() {
-				 var jobTitle = jQuery(this).find('td:first').text().trim();
-				 jobTitles.push(jobTitle);
-			 });
+		// Gather job titles, IDs, and details from the table
+		var jobs = [];
+		jQuery('#jobs-table tbody tr').each(function() {
+			var jobTitle = jQuery(this).find('td:first').text().trim();
+			var jobId = jQuery(this).find('a.sync-single-job').data('jobid');
+			var jobDetails = jQuery(this).find('a.sync-single-job').data('jobdetails');
 	
-			 // If no job titles found, alert the user
-			 if (jobTitles.length === 0) {
-				 alert('No jobs to sync.');
-				 return;
-			 }
-					 
-			 jQuery.ajax({
-				url: ajax_url,
-				type: 'POST',
-				data: {
-					action: 'sync_all_jobs',
-					job_titles: jobTitles,
-					// nonce: bis_admin_ajax.nonce
-				},
-				success: function(response) {
-					if (response.success) {
-						jQuery('.notice-success').css('display','block');
-						window.location.href = "https://careers.bostonindustrialsolutions.com/wp-admin/edit.php?post_type=job"
-					} else {
-						alert('Failed to sync jobs: ' + response.data);
-					}
-				},
-				error: function(xhr, status, error) {
-					alert('An error occurred: ' + error);
-				}
+			// Add job data to the array
+			jobs.push({
+				title: jobTitle,
+				id: jobId,
+				details: jobDetails
 			});
 		});
+	
+		// If no jobs found, alert the user
+		if (jobs.length === 0) {
+			alert('No jobs to sync.');
+			return;
+		}
+	
+		jQuery.ajax({
+			url: ajax_url,
+			type: 'POST',
+			data: {
+				action: 'sync_all_jobs',
+				jobs: jobs,
+				// nonce: bis_admin_ajax.nonce
+			},
+			success: function(response) {
+				if (response.success) {
+					jQuery('.notice-success').css('display', 'block');
+					window.location.href = "https://careers.bostonindustrialsolutions.com/wp-admin/edit.php?post_type=job";
+				} else {
+					alert('Failed to sync jobs: ' + response.data);
+				}
+			},
+			error: function(xhr, status, error) {
+				alert('An error occurred: ' + error);
+			}
+		});
+	});
+	
 } );
