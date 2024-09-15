@@ -729,9 +729,20 @@ if ( ! function_exists( 'boston_careers_sync_single_job_callback' ) ) {
 				'meta_input' => $meta_input, // Update the meta input
 			));
 
-			// Assign job_type taxonomy if provided
-			if ( !empty($job_type) ) {
-				wp_set_post_terms($post_id, $job_type, 'job_type', false);
+			// Create and assign job_type taxonomy term if provided
+			if (!empty($job_type)) {
+				// Check if the term exists
+				$term = term_exists( $job_type, 'job_type' );
+				
+				// If the term does not exist, create it
+				if ($term === 0 || $term === null) {
+					$term = wp_insert_term( $job_type, 'job_type' );
+				}
+	
+				// If term creation was successful, assign it to the post
+				if (!is_wp_error($term)) {
+					wp_set_post_terms($post_id, $term['term_id'], 'job_type', false);
+				}
 			}
 	
 			wp_send_json_success(array('message' => 'Job updated successfully.'));
@@ -744,10 +755,21 @@ if ( ! function_exists( 'boston_careers_sync_single_job_callback' ) ) {
 				'meta_input'  => $meta_input,
 			));
 	
-			if ( $post_id ) {
-				// Assign job_type taxonomy if provided
-				if ( !empty($job_type) ) {
-					wp_set_post_terms($post_id, $job_type, 'job_type', false);
+			if ($post_id) {
+				// Create and assign job_type taxonomy term if provided
+				if (!empty($job_type)) {
+					// Check if the term exists
+					$term = term_exists($job_type, 'job_type');
+					
+					// If the term does not exist, create it
+					if ($term === 0 || $term === null) {
+						$term = wp_insert_term($job_type, 'job_type');
+					}
+	
+					// If term creation was successful, assign it to the post
+					if (!is_wp_error($term)) {
+						wp_set_post_terms($post_id, $term['term_id'], 'job_type', false);
+					}
 				}
 				wp_send_json_success(array('message' => 'Job created successfully.'));
 			} else {
