@@ -216,11 +216,11 @@ if ( ! function_exists( 'boston_careers_register_recruiter_custom_taxonomy' ) ) 
 	function boston_careers_register_recruiter_custom_taxonomy() {
 		// Register Recruiter Taxonomy
 		register_taxonomy(
-			'recruiters',
+			'recruiter',
 			'job',
 			array(
 				'labels'            => array(
-					'name'          => __( 'Recruiters', 'boston-careers' ),
+					'name'          => __( 'Recruiter', 'boston-careers' ),
 					'singular_name' => __( 'Recruiter', 'boston-careers' ),
 					'search_items'  => __( 'Search Recruiter', 'boston-careers' ),
 					'all_items'     => __( 'All Recruiters', 'boston-careers' ),
