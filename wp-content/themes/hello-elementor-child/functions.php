@@ -631,6 +631,13 @@ if ( ! function_exists( 'boston_careers_sync_jobs' ) ) {
 					</tbody>
 				</table>
 				<!-- Add Sync All Jobs Button -->
+				<span>
+					<?php esc_html_e('Syncing Jobs will create a new job if not exist on', 'boston-careers'); ?>
+					<a href="<?php echo esc_url(get_site_url() . '/wp-admin/edit.php?post_type=job'); ?>">
+						<?php esc_html_e('listing page', 'boston-careers'); ?>
+					</a>.
+					<?php esc_html_e('If job exists, then just update the data.', 'boston-careers'); ?>
+				</span>
 				<form id="sync-all-jobs-form" method="POST" action="" style="margin-top: 10px;">
 					<input type="submit" class="button button-primary" value="<?php esc_attr_e('Sync All Jobs', 'boston-careers'); ?>" style="margin-top: 0px;">
 				</form>

@@ -31,7 +31,7 @@ jQuery( document ).ready( function( $ ) {
 					if ( response.success ) {
 						console.log( 'Job synced successfully!' );
 						$( '.sync-single-job' ).text( 'Sync' );
-						location.reload();
+						window.location.href = job_listing_url;
 					} else {
 						console.warn( 'Failed to sync job: ' + response.data );
 					}
