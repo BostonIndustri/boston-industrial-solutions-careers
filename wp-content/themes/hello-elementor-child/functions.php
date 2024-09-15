@@ -576,25 +576,19 @@ if ( ! function_exists( 'boston_careers_sync_jobs' ) ) {
 	function boston_careers_sync_jobs() {
 		$jobs_query = boston_careers_get_posts('job'); // Fetch the jobs.
 	
-		// Convert WP_Query object to an array of posts
+		// Convert WP_Query object to an array of posts (optional)
 		$jobs = $jobs_query->posts; 
 	
-		$existing_titles = wp_list_pluck($jobs, 'post_title'); // Get an array of existing job titles
-	
 		$zoho_jobs = boston_careers_fetch_zoho_job_openings(); // Fetch jobs from Zoho Recruit
-		// debug($zoho_jobs);
-		// Filter out jobs that are already present in the CPT
-		if($zoho_jobs){
-			$new_jobs = array_filter($zoho_jobs, function($job) use ($existing_titles) {
-				return !in_array($job['Job_Opening_Name'], $existing_titles);
-			});
-		}
-		// Your existing HTML code to display jobs
+	
+		// No filtering out of already synced jobs. We are displaying all jobs from Zoho.
+		$all_jobs = $zoho_jobs; 
+	
 		?>
 		<div class="wrap">
 			<h1><?php esc_html_e('Sync Jobs', 'boston-careers'); ?></h1>
 			<h3><?php esc_html_e('Sync Jobs From Zoho Recruit', 'boston-careers'); ?></h3>
-			<?php if (!empty($new_jobs)) { ?>
+			<?php if (!empty($all_jobs)) { ?>
 				<table class="widefat fixed" cellspacing="0" id="jobs-table">
 					<thead>
 						<tr>
@@ -604,7 +598,7 @@ if ( ! function_exists( 'boston_careers_sync_jobs' ) ) {
 						</tr>
 					</thead>
 					<tbody>
-						<?php foreach ($new_jobs as $job) { 
+						<?php foreach ($all_jobs as $job) { 
 							$job_details = array(
 								'Client_Name' => $job['Client_Name']['name'],
 								'Currency_Symbol' => $job['$currency_symbol'],
@@ -624,9 +618,9 @@ if ( ! function_exists( 'boston_careers_sync_jobs' ) ) {
 								'Expected_Revenue' => $job['Expected_Revenue'],
 								'Contact_Name' => $job['Contact_Name']
 							);
-
+	
 							// Convert the job details to a JSON string for data attribute
-    						$job_details_json = esc_attr(json_encode($job_details));
+							$job_details_json = esc_attr(json_encode($job_details));
 							?>
 							<tr>
 								<td><?php echo esc_html($job['Job_Opening_Name']); ?></td>
@@ -636,20 +630,17 @@ if ( ! function_exists( 'boston_careers_sync_jobs' ) ) {
 						<?php } ?>
 					</tbody>
 				</table>
-				<!-- Add Sync All Jobs Button with Checkbox -->
-                <form id="sync-all-jobs-form" method="POST" action="" style="margin-top: 10px;">
-                    <label>
-                        <!-- <input type="checkbox" name="sync_existing_jobs" value="0"> -->
-                        <?php //esc_html_e('Sync Existing Jobs', 'boston-careers'); ?>
-                    </label>
-                    <input type="submit" class="button button-primary" value="<?php esc_attr_e('Sync All Jobs', 'boston-careers'); ?>" style="margin-top: 0px;">
-                </form>
+				<!-- Add Sync All Jobs Button -->
+				<form id="sync-all-jobs-form" method="POST" action="" style="margin-top: 10px;">
+					<input type="submit" class="button button-primary" value="<?php esc_attr_e('Sync All Jobs', 'boston-careers'); ?>" style="margin-top: 0px;">
+				</form>
 			<?php } else { ?>
-				<p><?php esc_html_e( 'No new jobs to sync.', 'boston-careers' ); ?></p>
+				<p><?php esc_html_e('No jobs to sync.', 'boston-careers'); ?></p>
 			<?php } ?>
 		</div>
 		<?php
 	}
+	
 }
 
 /**
