@@ -586,19 +586,20 @@ if ( ! function_exists( 'boston_careers_sync_jobs' ) ) {
 	
 		?>
 		<div class="wrap">
-			<h1><?php esc_html_e('Sync Jobs', 'boston-careers'); ?></h1>
-			<h3><?php esc_html_e('Sync Jobs From Zoho Recruit', 'boston-careers'); ?></h3>
-			<?php if (isset($all_jobs) && !empty($all_jobs)) { ?>
+			<h1><?php esc_html_e( 'Sync Jobs', 'boston-careers' ); ?></h1>
+			<h3><?php esc_html_e( 'Sync Jobs From Zoho Recruit', 'boston-careers' ); ?></h3>
+			<?php if ( isset( $all_jobs ) && !empty( $all_jobs ) ) { ?>
 				<table class="widefat fixed" cellspacing="0" id="jobs-table">
 					<thead>
 						<tr>
-							<th><?php esc_html_e('Job Title', 'boston-careers'); ?></th>
-							<th><?php esc_html_e('Location', 'boston-careers'); ?></th>
-							<th><?php esc_html_e('Action', 'boston-careers'); ?></th>
+							<th><?php esc_html_e( 'Job Title', 'boston-careers' ); ?></th>
+							<th><?php esc_html_e( 'Location', 'boston-careers' ); ?></th>
+							<th><?php esc_html_e( 'Action', 'boston-careers' ); ?></th>
 						</tr>
 					</thead>
 					<tbody>
-						<?php foreach ($all_jobs as $job) { 
+						<?php foreach ( $all_jobs as $job ) { 
+							
 							$job_details = array(
 								'Client_Name' => $job['Client_Name']['name'],
 								'Currency_Symbol' => $job['$currency_symbol'],
@@ -621,29 +622,29 @@ if ( ! function_exists( 'boston_careers_sync_jobs' ) ) {
 							);
 	
 							// Convert the job details to a JSON string for data attribute
-							$job_details_json = esc_attr(json_encode($job_details));
+							$job_details_json = esc_attr( json_encode( $job_details ) );
 							?>
 							<tr>
-								<td><?php echo esc_html($job['Job_Opening_Name']); ?></td>
-								<td><?php echo esc_html($job['State']) . ', ' . esc_html($job['Country']); ?></td>
-								<td><a href="javascript:void(0);" data-jobid="<?php echo esc_html($job['Job_Opening_ID']); ?>" data-jobdetails="<?php echo $job_details_json; ?>" class="page-title-action sync-single-job"><?php esc_html_e('Sync', 'boston-careers'); ?></a></td>
+								<td><?php echo esc_html( $job['Job_Opening_Name'] ); ?></td>
+								<td><?php echo esc_html( $job['State'] ) . ', ' . esc_html( $job['Country'] ); ?></td>
+								<td><a href="javascript:void(0);" data-jobid="<?php echo esc_html( $job['Job_Opening_ID'] ); ?>" data-jobdetails="<?php echo $job_details_json; ?>" class="page-title-action sync-single-job"><?php esc_html_e ('Sync', 'boston-careers' ); ?></a></td>
 							</tr>
 						<?php } ?>
 					</tbody>
 				</table>
 				<!-- Add Sync All Jobs Button -->
 				<span>
-					<?php esc_html_e('Syncing Jobs will create a new job if not exist on', 'boston-careers'); ?>
-					<a href="<?php echo esc_url(get_site_url() . '/wp-admin/edit.php?post_type=job'); ?>">
-						<?php esc_html_e('listing page', 'boston-careers'); ?>
+					<?php esc_html_e( 'Syncing Jobs will create a new job if not exist on', 'boston-careers' ); ?>
+					<a href="<?php echo esc_url( get_site_url() . '/wp-admin/edit.php?post_type=job' ); ?>">
+						<?php esc_html_e( 'listing page', 'boston-careers' ); ?>
 					</a>.
-					<?php esc_html_e('If job exists, then just update the data.', 'boston-careers'); ?>
+					<?php esc_html_e( 'If job exists, then just update the data.', 'boston-careers' ); ?>
 				</span>
 				<form id="sync-all-jobs-form" method="POST" action="" style="margin-top: 10px;">
-					<input type="submit" class="button button-primary" value="<?php esc_attr_e('Sync All Jobs', 'boston-careers'); ?>" style="margin-top: 0px;">
+					<input type="submit" class="button button-primary" value="<?php esc_attr_e( 'Sync All Jobs', 'boston-careers' ); ?>" style="margin-top: 0px;">
 				</form>
 			<?php } else { ?>
-				<p><?php esc_html_e('No jobs to sync.', 'boston-careers'); ?></p>
+				<p><?php esc_html_e( 'No jobs to sync.', 'boston-careers' ); ?></p>
 			<?php } ?>
 		</div>
 		<?php
@@ -665,9 +666,9 @@ if ( ! function_exists( 'boston_careers_sync_single_job_callback' ) ) {
 		// check_ajax_referer('nonce', 'security');
 	
 		// Get the job title and ID from the request.
-		$job_title = filter_input(INPUT_POST, 'job_title', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-		$job_id = filter_input(INPUT_POST, 'job_id', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-		$job_details = isset($_POST['jobdetails']) ? wp_unslash($_POST['jobdetails']) : ''; // Use wp_unslash to remove slashes
+		$job_title = filter_input( INPUT_POST, 'job_title', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		$job_id = filter_input( INPUT_POST, 'job_id', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		$job_details = isset( $_POST['jobdetails']) ? wp_unslash($_POST['jobdetails'] ) : ''; // Use wp_unslash to remove slashes
 	
 		// Prepare meta input array
 		$meta_input = array(
@@ -677,12 +678,12 @@ if ( ! function_exists( 'boston_careers_sync_single_job_callback' ) ) {
 		);
 	
 		// Add job details to meta input array
-		foreach ($job_details as $key => $value) {
-			if (is_array($value)) {
-				if ($key === 'Account_Manager' && isset($value['name'])) {
+		foreach ( $job_details as $key => $value ) {
+			if ( is_array( $value ) ) {
+				if ( $key === 'Account_Manager' && isset( $value['name'] ) ) {
 					// Store only the name for the Account Manager
 					$meta_input[strtolower($key)] = sanitize_text_field($value['name']);
-				} elseif ($key === 'Contact_Name' && isset($value['name'])) {
+				} elseif ( $key === 'Contact_Name' && isset( $value['name'] ) ) {
 					// Store only the name for the Contact Name
 					$meta_input[strtolower($key)] = sanitize_text_field($value['name']);
 				}else {
@@ -696,7 +697,7 @@ if ( ! function_exists( 'boston_careers_sync_single_job_callback' ) ) {
 		}
 
 		// Store the job location data (City, State, Country) if available
-		if (isset($job_details['Job_Location'])) {
+		if ( isset( $job_details['Job_Location'] ) ) {
 			$meta_input['job_location'] = sanitize_text_field($job_details['Job_Location']);
 		}
 	
@@ -713,7 +714,7 @@ if ( ! function_exists( 'boston_careers_sync_single_job_callback' ) ) {
 			'posts_per_page' => 1
 		));
 	
-		if (!empty($existing_job)) {
+		if ( !empty( $existing_job ) ) {
 			// If job exists, update the post
 			$post_id = $existing_job[0]->ID;
 			wp_update_post(array(
@@ -732,7 +733,7 @@ if ( ! function_exists( 'boston_careers_sync_single_job_callback' ) ) {
 				'meta_input'  => $meta_input,
 			));
 	
-			if ($post_id) {
+			if ( $post_id ) {
 				wp_send_json_success(array('message' => 'Job created successfully.'));
 			} else {
 				wp_send_json_error(array('message' => 'Failed to create job post.'));
@@ -844,14 +845,14 @@ if ( ! function_exists( 'boston_careers_sync_all_jobs' ) ) {
 		// check_ajax_referer('nonce', 'security');
 	
 		// Get jobs data from the AJAX request
-		$jobs = isset($_POST['jobs']) ? $_POST['jobs'] : [];
+		$jobs = isset( $_POST['jobs'] ) ? $_POST['jobs'] : [];
 	
-		if (empty($jobs)) {
+		if ( empty($jobs) ) {
 			wp_send_json_error('No jobs provided.');
 			return;
 		}
 	
-		foreach ($jobs as $job) {
+		foreach ( $jobs as $job ) {
 			$job_title = sanitize_text_field($job['title']);
 			$job_id = sanitize_text_field($job['id']);
 			$job_details = isset($job['details']) ? $job['details'] : []; // The job details are already an array
@@ -864,12 +865,12 @@ if ( ! function_exists( 'boston_careers_sync_all_jobs' ) ) {
 			);
 	
 			// Add job details to meta input array
-			foreach ($job_details as $key => $value) {
-				if (is_array($value)) {
-					if ($key === 'Account_Manager' && isset($value['name'])) {
+			foreach ( $job_details as $key => $value ) {
+				if ( is_array( $value ) ) {
+					if ( $key === 'Account_Manager' && isset( $value['name'] ) ) {
 						// Store only the name for the Account Manager
 						$meta_input[strtolower($key)] = sanitize_text_field($value['name']);
-					} elseif ($key === 'Contact_Name' && isset($value['name'])) {
+					} elseif ( $key === 'Contact_Name' && isset( $value['name'] ) ) {
 						// Store only the name for the Contact Name
 						$meta_input[strtolower($key)] = sanitize_text_field($value['name']);
 					} else {
@@ -883,39 +884,44 @@ if ( ! function_exists( 'boston_careers_sync_all_jobs' ) ) {
 			}
 
 			// Store the job location data (City, State, Country) if available
-			if (isset($job_details['Job_Location'])) {
+			if ( isset( $job_details['Job_Location'] ) ) {
 				$meta_input['job_location'] = sanitize_text_field($job_details['Job_Location']);
 			}
 	
 			// Check if a job post with the same Zoho Job ID already exists
-			$existing_job = get_posts(array(
-				'post_type'   => 'job',
-				'meta_query'  => array(
+			$existing_job = get_posts(
+				array(
+					'post_type'   => 'job',
+					'meta_query'  => 
 					array(
-						'key'     => 'zoho_job_id',
-						'value'   => $job_id,
-						'compare' => '='
-					)
-				),
-				'posts_per_page' => 1
-			));
+						array(
+							'key'     => 'zoho_job_id',
+							'value'   => $job_id,
+							'compare' => '='
+						)
+					),
+					'posts_per_page' => 1
+				)
+			);
 	
-			if (!empty($existing_job)) {
+			if ( !empty($existing_job) ) {
 				// If job exists, update it
 				$post_id = $existing_job[0]->ID;
-				wp_update_post(array(
-					'ID'         => $post_id,
-					'post_title' => $job_title,
-					'meta_input' => $meta_input, // Update the meta input
-				));
+				wp_update_post(
+					array(
+						'ID'         => $post_id,
+						'post_title' => $job_title,
+						'meta_input' => $meta_input, // Update the meta input
+					));
 			} else {
 				// If job does not exist, create a new post
-				wp_insert_post(array(
-					'post_title'  => $job_title,
-					'post_type'   => 'job',
-					'post_status' => 'publish',
-					'meta_input'  => $meta_input,
-				));
+				wp_insert_post(
+					array(
+						'post_title'  => $job_title,
+						'post_type'   => 'job',
+						'post_status' => 'publish',
+						'meta_input'  => $meta_input,
+					));
 			}
 		}
 	
