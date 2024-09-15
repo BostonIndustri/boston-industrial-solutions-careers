@@ -618,9 +618,12 @@ if ( ! function_exists( 'boston_careers_sync_jobs' ) ) {
 								'No_of_Candidates_Hired' => $job['No_of_Candidates_Hired'],
 								'Expected_Revenue' => $job['Expected_Revenue'],
 								'Contact_Name' => $job['Contact_Name'],
-								'Job_Location' => $job['State']. ', '.$job['Country']
+								'Job_Location' => $job['State']. ', '.$job['Country'],
+								'Job_Type' => $job['Job_Type'],
+								'Job_Industry' => $job['Industry']
+
 							);
-	
+							
 							// Convert the job details to a JSON string for data attribute
 							$job_details_json = esc_attr( json_encode( $job_details ) );
 							?>
@@ -700,6 +703,9 @@ if ( ! function_exists( 'boston_careers_sync_single_job_callback' ) ) {
 		if ( isset( $job_details['Job_Location'] ) ) {
 			$meta_input['job_location'] = sanitize_text_field($job_details['Job_Location']);
 		}
+
+		$job_type = isset( $job_details['Job_Type'] ) ? sanitize_text_field($job_details['Job_Type']) : '';
+
 	
 		// Check if the job post with the same Zoho Job ID already exists
 		$existing_job = get_posts(array(
@@ -722,6 +728,11 @@ if ( ! function_exists( 'boston_careers_sync_single_job_callback' ) ) {
 				'post_title' => $job_title,
 				'meta_input' => $meta_input, // Update the meta input
 			));
+
+			// Assign job_type taxonomy if provided
+			if ( !empty($job_type) ) {
+				wp_set_post_terms($post_id, $job_type, 'job_type', false);
+			}
 	
 			wp_send_json_success(array('message' => 'Job updated successfully.'));
 		} else {
@@ -734,6 +745,10 @@ if ( ! function_exists( 'boston_careers_sync_single_job_callback' ) ) {
 			));
 	
 			if ( $post_id ) {
+				// Assign job_type taxonomy if provided
+				if ( !empty($job_type) ) {
+					wp_set_post_terms($post_id, $job_type, 'job_type', false);
+				}
 				wp_send_json_success(array('message' => 'Job created successfully.'));
 			} else {
 				wp_send_json_error(array('message' => 'Failed to create job post.'));
