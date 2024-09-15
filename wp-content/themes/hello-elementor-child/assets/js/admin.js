@@ -5,7 +5,7 @@ jQuery( document ).ready( function( $ ) {
 	var ajax_url   = Boston_Careers_Admin_Js_Props.ajax_url;
 	var ajax_nonce = Boston_Careers_Admin_Js_Props.ajax_nonce;
 	var job_listing_url = Boston_Careers_Admin_Js_Props.job_listing_url
-	console.log(job_listing_url);
+	// console.log(job_listing_url);
 	// Sync single job.
 	if ( $( '.sync-single-job' ).length ) {
 		$( '.sync-single-job' ).on( 'click', function( e ) {

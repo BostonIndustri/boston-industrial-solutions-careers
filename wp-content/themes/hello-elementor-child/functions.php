@@ -294,13 +294,13 @@ if ( ! function_exists( 'boston_careers_register_job_type_custom_taxonomy' ) ) {
 				'labels'            => array(
 					'name'          => __( 'Job Types', 'boston-careers' ),
 					'singular_name' => __( 'Job Types', 'boston-careers' ),
-					'search_items'  => __( 'Search Job Typess', 'boston-careers' ),
-					'all_items'     => __( 'All Job Typess', 'boston-careers' ),
+					'search_items'  => __( 'Search Job Types', 'boston-careers' ),
+					'all_items'     => __( 'All Job Types', 'boston-careers' ),
 					'edit_item'     => __( 'Edit Job Types', 'boston-careers' ),
 					'update_item'   => __( 'Update Job Types', 'boston-careers' ),
 					'add_new_item'  => __( 'Add New Job Types', 'boston-careers' ),
 					'new_item_name' => __( 'New Job Types Name', 'boston-careers' ),
-					'menu_name'     => __( 'Job Typess', 'boston-careers' ),
+					'menu_name'     => __( 'Job Types', 'boston-careers' ),
 				),
 				'hierarchical'      => true,
 				'show_ui'           => true,
@@ -616,7 +616,8 @@ if ( ! function_exists( 'boston_careers_sync_jobs' ) ) {
 								'Salary' => $job['Salary'],
 								'No_of_Candidates_Hired' => $job['No_of_Candidates_Hired'],
 								'Expected_Revenue' => $job['Expected_Revenue'],
-								'Contact_Name' => $job['Contact_Name']
+								'Contact_Name' => $job['Contact_Name'],
+								'Job_Location' => $job['State']. ', '.$job['Country']
 							);
 	
 							// Convert the job details to a JSON string for data attribute
@@ -667,13 +668,6 @@ if ( ! function_exists( 'boston_careers_sync_single_job_callback' ) ) {
 		$job_title = filter_input(INPUT_POST, 'job_title', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 		$job_id = filter_input(INPUT_POST, 'job_id', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 		$job_details = isset($_POST['jobdetails']) ? wp_unslash($_POST['jobdetails']) : ''; // Use wp_unslash to remove slashes
-	
-		// // Decode job details from JSON
-		// $job_details = json_decode($job_details_json, true);
-		// if (empty($job_details)) {
-		// 	wp_send_json_error('Invalid job details.');
-		// 	return;
-		// }
 	
 		// Prepare meta input array
 		$meta_input = array(
@@ -921,4 +915,3 @@ if ( ! function_exists( 'boston_careers_sync_all_jobs' ) ) {
 }
 
 add_action('wp_ajax_sync_all_jobs', 'boston_careers_sync_all_jobs');
-
