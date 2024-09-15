@@ -653,29 +653,36 @@ if ( ! function_exists( 'boston_careers_sync_single_job_callback' ) ) {
 	 * @since 1.0.0
 	 */
 	function boston_careers_sync_single_job_callback() {
-
+		// Check nonce for security (uncomment if needed)
 		// check_ajax_referer('nonce', 'security');
-		// Get the job title from the request.
-		$job_title = filter_input( INPUT_POST, 'job_title', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
-		$job_id = filter_input( INPUT_POST, 'job_id', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
-		$job_details_json = isset( $_POST['jobdetails'] ) ? wp_unslash( $_POST['jobdetails'] ) : ''; // Use wp_unslash to remove slashes from the input
-		// debug($job_details_json);
-		// die('lkoo');
-		// Initialize meta input array
+	
+		// Get the job title and ID from the request.
+		$job_title = filter_input(INPUT_POST, 'job_title', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$job_id = filter_input(INPUT_POST, 'job_id', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$job_details_json = isset($_POST['jobdetails']) ? wp_unslash($_POST['jobdetails']) : ''; // Use wp_unslash to remove slashes
+	
+		// Decode job details from JSON
+		$job_details = json_decode($job_details_json, true);
+		if (empty($job_details)) {
+			wp_send_json_error('Invalid job details.');
+			return;
+		}
+	
+		// Prepare meta input array
 		$meta_input = array(
 			'source'         => 'zoho-recruit',
 			'sync_date_time' => time(),
 			'zoho_job_id'    => $job_id, // Store the Zoho job ID
 		);
-
+	
 		// Add job details to meta input array
-		foreach ($job_details_json as $key => $value) {
+		foreach ($job_details as $key => $value) {
 			if (is_array($value)) {
 				if ($key === 'Account_Manager' && isset($value['name'])) {
 					// Store only the name for the Account Manager
 					$meta_input[strtolower($key)] = sanitize_text_field($value['name']);
 				} else {
-					// If the value is an array (e.g., nested data), serialize it to store it as a string
+					// If the value is an array (e.g., nested data), serialize it to store as a string
 					$meta_input[strtolower($key)] = maybe_serialize($value);
 				}
 			} else {
@@ -683,33 +690,49 @@ if ( ! function_exists( 'boston_careers_sync_single_job_callback' ) ) {
 				$meta_input[strtolower($key)] = sanitize_text_field($value);
 			}
 		}
-
-		// Create a new post in the 'job' custom post type.
-		$post_id = wp_insert_post(
-			array(
+	
+		// Check if the job post with the same Zoho Job ID already exists
+		$existing_job = get_posts(array(
+			'post_type'   => 'job',
+			'meta_query'  => array(
+				array(
+					'key'     => 'zoho_job_id',
+					'value'   => $job_id,
+					'compare' => '='
+				)
+			),
+			'posts_per_page' => 1
+		));
+	
+		if (!empty($existing_job)) {
+			// If job exists, update the post
+			$post_id = $existing_job[0]->ID;
+			wp_update_post(array(
+				'ID'         => $post_id,
+				'post_title' => $job_title,
+				'meta_input' => $meta_input, // Update the meta input
+			));
+	
+			wp_send_json_success(array('message' => 'Job updated successfully.'));
+		} else {
+			// If job does not exist, create a new post
+			$post_id = wp_insert_post(array(
 				'post_title'  => $job_title,
 				'post_type'   => 'job',
 				'post_status' => 'publish',
 				'meta_input'  => $meta_input,
-			)
-		);
-
-		if ( $post_id ) {
-			wp_send_json_success(
-				array(
-					'message' => 'Job synced successfully.',
-				)
-			);
-		} else {
-			wp_send_json_error(
-				array(
-					'message' => 'Failed to create job post.',
-				)
-			);
+			));
+	
+			if ($post_id) {
+				wp_send_json_success(array('message' => 'Job created successfully.'));
+			} else {
+				wp_send_json_error(array('message' => 'Failed to create job post.'));
+			}
 		}
-
-		wp_die();
+	
+		wp_die(); // This is required to terminate immediately and return a proper response
 	}
+	
 }
 
 add_action( 'wp_ajax_sync_single_job', 'boston_careers_sync_single_job_callback' );
