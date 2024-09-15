@@ -1,5 +1,5 @@
 <?php get_header(); ?>
-
+<?php echo "Job ID: ".get_the_ID(); ?>
 <section class="job-detail-main">
     <div class="container-boston">
         <h1>PRODUCTION MANAGER</h1>
