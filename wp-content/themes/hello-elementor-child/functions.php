@@ -574,13 +574,13 @@ if ( ! function_exists( 'boston_careers_sync_jobs' ) ) {
 	 * @since 1.0.0
 	*/
 	function boston_careers_sync_jobs() {
-		$jobs_query = boston_careers_get_posts('job'); // Fetch the jobs.
+		$jobs_query = boston_careers_get_posts( 'job' ); // Fetch the jobs.
 	
 		// Convert WP_Query object to an array of posts (optional)
 		$jobs = $jobs_query->posts; 
 	
 		$zoho_jobs = boston_careers_fetch_zoho_job_openings(); // Fetch jobs from Zoho Recruit
-		debug($zoho_jobs);
+		
 		// No filtering out of already synced jobs. We are displaying all jobs from Zoho.
 		$all_jobs = $zoho_jobs; 
 	
@@ -599,7 +599,7 @@ if ( ! function_exists( 'boston_careers_sync_jobs' ) ) {
 					</thead>
 					<tbody>
 						<?php foreach ( $all_jobs as $job ) { 
-
+							debug($job);
 							$job_details = array(
 								'Client_Name' => $job['Client_Name']['name'],
 								'Currency_Symbol' => $job['$currency_symbol'],
