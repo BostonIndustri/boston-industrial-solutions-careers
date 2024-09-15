@@ -599,7 +599,7 @@ if ( ! function_exists( 'boston_careers_sync_jobs' ) ) {
 					</thead>
 					<tbody>
 						<?php foreach ( $all_jobs as $job ) { 
-							debug($job);
+							// debug($job);
 							$job_details = array(
 								'Client_Name' => $job['Client_Name']['name'],
 								'Currency_Symbol' => $job['$currency_symbol'],
