@@ -2,7 +2,7 @@
 <?php echo "Job ID: ".get_the_ID(); ?>
 <section class="job-detail-main">
     <div class="container-boston">
-        <h1>PRODUCTION MANAGER</h1>
+        <h1><?php echo get_the_title(get_the_ID()); ?></h1>
         <div class="boosten-bradcom">
             <ul>
                 <li>
@@ -10,7 +10,7 @@
                 </li>
                 <li>
                     <a href="javascript:void(0);">
-                        PRODUCTION MANAGER
+                    <?php echo get_the_title(get_the_ID()); ?>
                     </a>
                 </li>
             </ul>
@@ -22,7 +22,7 @@
     <div class="container-boston">
         <div class="jobdetailsbox">
              <div class="jobdetailsbox-left">
-                <h2>PRODUCTION MANAGER <span>WOBURN, USA</span></h2>
+                <h2><?php echo get_the_title(get_the_ID()); ?> <span>WOBURN, USA</span></h2>
                 <p>
                     Pad printing inks for any application from Boston Industrial Solutions, Inc. are made with safety and sustainability in mind. Our top-quality inks are available in single- and two-component types. We make silicone, UV-curable, and solvent-based printing inks following strict quality management standards. These inks are not only enhanced and fine-tuned to adhere to the toughest substrates (materials) in the world, but they are also made to exceed ATSM, medical, and mil-spec standards. Many industries and Fortune 500 companies use these inks for printing, marking, and decorating parts. Boston Industrial Solutions, Inc. inks work effectively with any pad printing equipment, regardless of the manufacturer. Additionally, these inks achieve excellent results every time. Furthermore, we are constantly innovating to meet and exceed ever-changing compliance, consumer, and industrial applications.
                 </p> 
