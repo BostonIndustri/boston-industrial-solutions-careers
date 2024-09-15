@@ -599,7 +599,7 @@ if ( ! function_exists( 'boston_careers_sync_jobs' ) ) {
 					</thead>
 					<tbody>
 						<?php foreach ( $all_jobs as $job ) { 
-							debug($job);
+							// debug($job);
 							$job_details = array(
 								'Client_Name' => $job['Client_Name']['name'],
 								'Currency_Symbol' => $job['$currency_symbol'],
@@ -743,6 +743,21 @@ if ( ! function_exists( 'boston_careers_sync_single_job_callback' ) ) {
 				// If term creation was successful, assign it to the post
 				if (!is_wp_error($term)) {
 					wp_set_post_terms($post_id, $term['term_id'], 'job_type', false);
+				}
+			}
+
+			if (!empty($job_industry)) {
+				// Check if the term exists
+				$job_industry_term = term_exists($job_industry, 'industry');
+
+				// If the term does not exist, create it
+				if ($job_industry_term === 0 || $job_industry_term === null) {
+					$job_industry_term = wp_insert_term($job_industry, 'industry');
+				}
+
+				// If term creation was successful, assign it to the post
+				if (!is_wp_error($job_industry_term)) {
+					wp_set_post_terms($post_id, $job_industry_term['term_id'], 'industry', false);
 				}
 			}
 	
