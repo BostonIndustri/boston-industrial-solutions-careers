@@ -471,7 +471,7 @@ if ( ! function_exists( 'boston_careers_fetch_zoho_job_openings' ) ) {
 		// Get the response from the body.
 		$body = wp_remote_retrieve_body( $response );
 		$data = json_decode( $body, true );
-		// debug($data);
+
 		// Return the job listings.
 		if ( isset($data['data'] ) && is_array( $data['data'] ) ) {
 			return $data['data'];
@@ -588,7 +588,7 @@ if ( ! function_exists( 'boston_careers_sync_jobs' ) ) {
 		<div class="wrap">
 			<h1><?php esc_html_e('Sync Jobs', 'boston-careers'); ?></h1>
 			<h3><?php esc_html_e('Sync Jobs From Zoho Recruit', 'boston-careers'); ?></h3>
-			<?php if (!empty($all_jobs)) { ?>
+			<?php if (isset($all_jobs) && !empty($all_jobs)) { ?>
 				<table class="widefat fixed" cellspacing="0" id="jobs-table">
 					<thead>
 						<tr>
