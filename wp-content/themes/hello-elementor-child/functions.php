@@ -659,14 +659,14 @@ if ( ! function_exists( 'boston_careers_sync_single_job_callback' ) ) {
 		// Get the job title and ID from the request.
 		$job_title = filter_input(INPUT_POST, 'job_title', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 		$job_id = filter_input(INPUT_POST, 'job_id', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-		$job_details_json = isset($_POST['jobdetails']) ? wp_unslash($_POST['jobdetails']) : ''; // Use wp_unslash to remove slashes
+		$job_details = isset($_POST['jobdetails']) ? wp_unslash($_POST['jobdetails']) : ''; // Use wp_unslash to remove slashes
 	
-		// Decode job details from JSON
-		$job_details = json_decode($job_details_json, true);
-		if (empty($job_details)) {
-			wp_send_json_error('Invalid job details.');
-			return;
-		}
+		// // Decode job details from JSON
+		// $job_details = json_decode($job_details_json, true);
+		// if (empty($job_details)) {
+		// 	wp_send_json_error('Invalid job details.');
+		// 	return;
+		// }
 	
 		// Prepare meta input array
 		$meta_input = array(
