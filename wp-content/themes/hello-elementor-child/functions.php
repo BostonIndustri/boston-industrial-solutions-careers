@@ -688,7 +688,10 @@ if ( ! function_exists( 'boston_careers_sync_single_job_callback' ) ) {
 				if ($key === 'Account_Manager' && isset($value['name'])) {
 					// Store only the name for the Account Manager
 					$meta_input[strtolower($key)] = sanitize_text_field($value['name']);
-				} else {
+				} elseif ($key === 'Contact_Name' && isset($value['name'])) {
+					// Store only the name for the Contact Name
+					$meta_input[strtolower($key)] = sanitize_text_field($value['name']);
+				}else {
 					// If the value is an array (e.g., nested data), serialize it to store as a string
 					$meta_input[strtolower($key)] = maybe_serialize($value);
 				}
