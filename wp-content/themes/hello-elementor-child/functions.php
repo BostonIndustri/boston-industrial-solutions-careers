@@ -694,6 +694,11 @@ if ( ! function_exists( 'boston_careers_sync_single_job_callback' ) ) {
 				$meta_input[strtolower($key)] = sanitize_text_field($value);
 			}
 		}
+
+		// Store the job location data (City, State, Country) if available
+		if (isset($job_details['Job_Location'])) {
+			$meta_input['job_location'] = sanitize_text_field($job_details['Job_Location']);
+		}
 	
 		// Check if the job post with the same Zoho Job ID already exists
 		$existing_job = get_posts(array(
@@ -875,6 +880,11 @@ if ( ! function_exists( 'boston_careers_sync_all_jobs' ) ) {
 					// Otherwise, sanitize and add the value directly
 					$meta_input[strtolower($key)] = sanitize_text_field($value);
 				}
+			}
+
+			// Store the job location data (City, State, Country) if available
+			if (isset($job_details['Job_Location'])) {
+				$meta_input['job_location'] = sanitize_text_field($job_details['Job_Location']);
 			}
 	
 			// Check if a job post with the same Zoho Job ID already exists
