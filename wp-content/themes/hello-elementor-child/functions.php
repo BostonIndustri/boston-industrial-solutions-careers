@@ -599,7 +599,7 @@ if ( ! function_exists( 'boston_careers_sync_jobs' ) ) {
 					</thead>
 					<tbody>
 						<?php foreach ( $all_jobs as $job ) { 
-							// debug($job);
+							debug($job);
 							$job_details = array(
 								'Client_Name' => $job['Client_Name']['name'],
 								'Currency_Symbol' => $job['$currency_symbol'],
@@ -705,6 +705,7 @@ if ( ! function_exists( 'boston_careers_sync_single_job_callback' ) ) {
 		}
 
 		$job_type = isset( $job_details['Job_Type'] ) ? sanitize_text_field($job_details['Job_Type']) : '';
+		$job_industry = isset( $job_details['Job_Industry'] ) ? sanitize_text_field($job_details['Job_Industry']) : '';
 
 	
 		// Check if the job post with the same Zoho Job ID already exists
@@ -759,16 +760,31 @@ if ( ! function_exists( 'boston_careers_sync_single_job_callback' ) ) {
 				// Create and assign job_type taxonomy term if provided
 				if (!empty($job_type)) {
 					// Check if the term exists
-					$term = term_exists($job_type, 'job_type');
-					
+					$job_type_term = term_exists($job_type, 'job_type');
+
 					// If the term does not exist, create it
-					if ($term === 0 || $term === null) {
-						$term = wp_insert_term($job_type, 'job_type');
+					if ($job_type_term === 0 || $job_type_term === null) {
+						$job_type_term = wp_insert_term($job_type, 'job_type');
 					}
 	
 					// If term creation was successful, assign it to the post
-					if (!is_wp_error($term)) {
-						wp_set_post_terms($post_id, $term['term_id'], 'job_type', false);
+					if (!is_wp_error($job_type_term)) {
+						wp_set_post_terms($post_id, $job_type_term['term_id'], 'job_type', false);
+					}
+				}
+
+				if (!empty($job_industry)) {
+					// Check if the term exists
+					$job_industry_term = term_exists($job_industry, 'industry');
+
+					// If the term does not exist, create it
+					if ($job_industry_term === 0 || $job_industry_term === null) {
+						$job_industry_term = wp_insert_term($job_industry, 'industry');
+					}
+	
+					// If term creation was successful, assign it to the post
+					if (!is_wp_error($job_industry_term)) {
+						wp_set_post_terms($post_id, $job_industry_term['term_id'], 'industry', false);
 					}
 				}
 				wp_send_json_success(array('message' => 'Job created successfully.'));
