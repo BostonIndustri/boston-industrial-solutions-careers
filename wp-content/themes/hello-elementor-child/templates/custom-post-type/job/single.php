@@ -2,7 +2,7 @@
 <?php 
 
 echo "Job ID: ".get_the_ID(); 
-$job_location = get_post_meta(get_the_ID(),'job_location');
+$job_location = get_field('job_location',get_the_ID());
 ?>
 <section class="job-detail-main">
     <div class="container-boston">
